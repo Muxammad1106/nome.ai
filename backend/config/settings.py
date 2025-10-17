@@ -14,7 +14,13 @@ SECRET_KEY = "django-insecure-(m-u2m=x@5!hk%pii0ib=*z8#c1!x=e1+0xkq+yrpc28nb4rp8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'nome-ai-t5lly.ondigitalocean.app',
+    'nomeai.space',
+]
 
 
 # Application definition
