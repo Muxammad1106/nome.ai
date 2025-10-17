@@ -1,0 +1,179 @@
+# Cart 1 - для Person 1
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440001
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111001
+    created_at: "2024-09-18T08:00:00Z"
+    updated_at: "2024-09-18T09:00:00Z"
+
+# Cart 2 - для Person 2
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440002
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111002
+    created_at: "2024-09-19T08:15:00Z"
+    updated_at: "2024-09-19T08:45:00Z"
+
+# Cart 3 - для Person 3
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440003
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111003
+    created_at: "2024-09-20T09:00:00Z"
+    updated_at: "2024-09-20T09:30:00Z"
+
+# Cart 4 - для Person 4
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440004
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111004
+    created_at: "2024-09-21T09:10:00Z"
+    updated_at: "2024-09-21T09:40:00Z"
+
+# Cart 5 - для Person 5
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440005
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111005
+    created_at: "2024-09-22T10:00:00Z"
+    updated_at: "2024-09-22T10:30:00Z"
+
+# Cart 6 - для Person 6
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440006
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111006
+    created_at: "2024-09-23T11:00:00Z"
+    updated_at: "2024-09-23T11:20:00Z"
+
+# Cart 7 - для Person 7
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440007
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111007
+    created_at: "2024-09-24T11:30:00Z"
+    updated_at: "2024-09-24T12:00:00Z"
+
+# Cart 8 - для Person 8
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440008
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111008
+    created_at: "2024-09-25T12:10:00Z"
+    updated_at: "2024-09-25T12:30:00Z"
+
+# Cart 9 - для Person 9
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440009
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111009
+    created_at: "2024-09-26T12:45:00Z"
+    updated_at: "2024-09-26T13:00:00Z"
+
+# Cart 10 - для Person 10
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440010
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111010
+    created_at: "2024-09-27T13:30:00Z"
+    updated_at: "2024-09-27T14:00:00Z"
+
+# Cart 11 - для Person 11 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440011
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111011
+    created_at: "2024-10-01T08:00:00Z"
+    updated_at: "2024-10-01T09:00:00Z"
+
+# Cart 12 - для Person 12 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440012
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111012
+    created_at: "2024-10-02T09:15:00Z"
+    updated_at: "2024-10-02T10:00:00Z"
+
+# Cart 13 - для Person 13 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440013
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    person: 11111111-1111-1111-1111-111111111013
+    created_at: "2024-10-03T10:30:00Z"
+    updated_at: "2024-10-03T11:15:00Z"
+
+# Cart 14 - для Person 14 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440014
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111014
+    created_at: "2024-10-04T11:45:00Z"
+    updated_at: "2024-10-04T12:30:00Z"
+
+# Cart 15 - для Person 15 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440015
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    person: 11111111-1111-1111-1111-111111111015
+    created_at: "2024-10-05T13:00:00Z"
+    updated_at: "2024-10-05T13:45:00Z"
+
+# Cart 16 - для Person 16 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440016
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111016
+    created_at: "2024-10-06T14:15:00Z"
+    updated_at: "2024-10-06T15:00:00Z"
+
+# Cart 17 - для Person 17 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440017
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    person: 11111111-1111-1111-1111-111111111017
+    created_at: "2024-10-07T15:30:00Z"
+    updated_at: "2024-10-07T16:15:00Z"
+
+# Cart 18 - для Person 18 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440018
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111018
+    created_at: "2024-10-08T16:45:00Z"
+    updated_at: "2024-10-08T17:30:00Z"
+
+# Cart 19 - для Person 19 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440019
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    person: 11111111-1111-1111-1111-111111111019
+    created_at: "2024-10-09T18:00:00Z"
+    updated_at: "2024-10-09T18:45:00Z"
+
+# Cart 20 - для Person 20 (октябрь)
+- model: client.cart
+  pk: 950e8400-e29b-41d4-a716-446655440020
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    person: 11111111-1111-1111-1111-111111111020
+    created_at: "2024-10-10T19:15:00Z"
+    updated_at: "2024-10-10T20:00:00Z"

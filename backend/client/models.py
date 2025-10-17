@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from django.db import models
-from apps.core.models import BaseModel
+from core.models import BaseModel
 from .utils import generate_private_key
 from pgvector.django import VectorField
 
@@ -26,8 +26,16 @@ class Person(BaseModel):
     """Represents a person with an embedding vector."""
 
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="people")
-    name = models.CharField(max_length=255)
-    vector = VectorField(dimensions=128)
+    full_name = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=255, blank=True, null=True)
+    vector = VectorField(dimensions=128, blank=True, null=True)
+    image = models.ImageField(upload_to="people/", blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    gender = models.CharField(max_length=255, blank=True, null=True)
+    emotion = models.CharField(max_length=255, blank=True, null=True)
+    body_type = models.CharField(max_length=255, blank=True, null=True)
+    entry_time = models.DateTimeField(blank=True, null=True)
+    exit_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self) -> str:
         return self.name

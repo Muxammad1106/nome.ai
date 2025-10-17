@@ -1,0 +1,84 @@
+- model: core.user
+  pk: 1
+  fields:
+    password: "pbkdf2_sha256$600000$test123$test123"
+    last_login: "2024-10-18T10:00:00Z"
+    is_superuser: true
+    username: "admin"
+    first_name: "Admin"
+    last_name: "System"
+    email: "admin@example.com"
+    is_staff: true
+    is_active: true
+    date_joined: "2024-01-01T00:00:00Z"
+    phone_number: "+7 (999) 000-00-01"
+    is_verified: true
+    last_login_ip: "127.0.0.1"
+
+- model: core.user
+  pk: 2
+  fields:
+    password: "pbkdf2_sha256$600000$test123$test123"
+    last_login: "2024-10-17T15:30:00Z"
+    is_superuser: false
+    username: "manager"
+    first_name: "Manager"
+    last_name: "Store"
+    email: "manager@example.com"
+    is_staff: true
+    is_active: true
+    date_joined: "2024-02-01T00:00:00Z"
+    phone_number: "+7 (999) 000-00-02"
+    is_verified: true
+    last_login_ip: "192.168.1.100"
+
+- model: core.user
+  pk: 3
+  fields:
+    password: "pbkdf2_sha256$600000$test123$test123"
+    last_login: "2024-10-16T12:00:00Z"
+    is_superuser: false
+    username: "user1"
+    first_name: "John"
+    last_name: "Smith"
+    email: "ivan@example.com"
+    is_staff: false
+    is_active: true
+    date_joined: "2024-03-01T00:00:00Z"
+    phone_number: "+7 (999) 000-00-03"
+    is_verified: true
+    last_login_ip: "192.168.1.101"
+
+- model: core.user
+  pk: 4
+  fields:
+    password: "pbkdf2_sha256$600000$test123$test123"
+    last_login: "2024-10-15T09:15:00Z"
+    is_superuser: false
+    username: "user2"
+    first_name: "Mary"
+    last_name: "Johnson"
+    email: "maria@example.com"
+    is_staff: false
+    is_active: true
+    date_joined: "2024-04-01T00:00:00Z"
+    phone_number: "+7 (999) 000-00-04"
+    is_verified: true
+    last_login_ip: "192.168.1.102"
+
+- model: core.user
+  pk: 5
+  fields:
+    password: "pbkdf2_sha256$600000$test123$test123"
+    last_login: "2024-10-14T14:45:00Z"
+    is_superuser: false
+    username: "user3"
+    first_name: "Alex"
+    last_name: "Brown"
+    email: "alexey@example.com"
+    is_staff: false
+    is_active: true
+    date_joined: "2024-05-01T00:00:00Z"
+    phone_number: "+7 (999) 000-00-05"
+    is_verified: false
+    last_login_ip: "192.168.1.103"

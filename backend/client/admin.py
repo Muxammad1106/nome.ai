@@ -1,6 +1,5 @@
 """Admin registrations for client app."""
 from django.contrib import admin
-
 from . import models
 
 
@@ -12,8 +11,8 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "organization")
-    search_fields = ("name",)
+    list_display = ("id", "full_name", "phone_number", "organization")
+    search_fields = ("full_name", "phone_number")
     list_filter = ("organization",)
 
 

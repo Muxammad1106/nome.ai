@@ -11,7 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django_application = get_asgi_application()
 
 try:
-    from apps.core import routing as core_routing
+    from core import routing as core_routing
 except Exception:  # pragma: no cover - fallback if app misconfigured
     core_routing = None
 
