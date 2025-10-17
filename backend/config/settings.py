@@ -16,9 +16,11 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
-    if host.strip()
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'nome-ai-t5lly.ondigitalocean.app',
+    os.environ.get('ALLOWED_HOSTS', '')
 ]
 
 INSTALLED_APPS = [
