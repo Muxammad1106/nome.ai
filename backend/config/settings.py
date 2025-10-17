@@ -66,6 +66,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://nome-ai-t5lly.ondigitalocean.app",
+]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
