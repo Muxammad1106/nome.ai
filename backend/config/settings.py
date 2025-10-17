@@ -1,7 +1,19 @@
 """Django settings for the nome.ai backend."""
-from pathlib import Path
-import os
+from __future__ import annotations
 
+import os
+from pathlib import Path
+
+import dj_database_url
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_PATH = BASE_DIR.parent / ".env"
+if ENV_PATH.exists():
+    load_dotenv(ENV_PATH)
+
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
+DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() == "true"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
