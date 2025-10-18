@@ -22,7 +22,8 @@ from ..serializers import (
     PersonSummarySerializer,
     PersonOrderHistoryResponseSerializer,
 )
-from ..utils import get_age_category, _generate_ai_summary
+from ..utils import _generate_ai_summary
+from ..events import notify_person_joined
 
 
 @extend_schema(
@@ -44,6 +45,9 @@ class PersonVectorView(APIView):
         if serializer.is_valid():
             person = serializer.save()
             response_serializer = PersonVectorSerializer(person)
+
+            notify_person_joined(response_serializer.data)
+
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

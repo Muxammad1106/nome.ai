@@ -161,6 +161,7 @@ class PersonListSerializer(serializers.ModelSerializer):
         model = Person
         fields = (
             "id",
+            "image",
             "full_name",
             "phone_number",
             "age",
