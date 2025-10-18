@@ -38,7 +38,7 @@ class Person(BaseModel):
     exit_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self) -> str:
-        return self.full_name
+        return f"Person {self.id}"
 
 
 class Product(BaseModel):
