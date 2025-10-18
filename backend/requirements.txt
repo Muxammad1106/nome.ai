@@ -11,4 +11,5 @@ pyyaml==6.0.3
 whitenoise==6.11.0
 dj-database-url==3.0.1
 drf-spectacular==0.27.2
+openai==2.5.0
 django-cors-headers==4.3.1

@@ -17,7 +17,7 @@ class PersonListAPITestCase(TestCase):
             name="Test Organization",
             private_key="TEST001"
         )
-        
+
         # Create test persons
         for i in range(15):
             Person.objects.create(
@@ -34,7 +34,7 @@ class PersonListAPITestCase(TestCase):
         """Test getting person list with default pagination."""
         url = reverse('person-list')
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('results', response.data)
         self.assertIn('count', response.data)
@@ -45,7 +45,7 @@ class PersonListAPITestCase(TestCase):
         """Test getting person list with custom pagination."""
         url = reverse('person-list')
         response = self.client.get(url, {'page': 2, 'page_size': 5})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 5)
         self.assertEqual(response.data['current_page'], 2)
@@ -55,7 +55,7 @@ class PersonListAPITestCase(TestCase):
         """Test getting person list with invalid pagination parameters."""
         url = reverse('person-list')
         response = self.client.get(url, {'page': 'invalid', 'page_size': 'invalid'})
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('page и page_size должны быть числами', str(response.data))
 
@@ -63,7 +63,7 @@ class PersonListAPITestCase(TestCase):
         """Test page size limit enforcement."""
         url = reverse('person-list')
         response = self.client.get(url, {'page_size': 150})  # Exceeds limit of 100
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['page_size'], 100)  # Should be limited to 100
 
@@ -71,7 +71,7 @@ class PersonListAPITestCase(TestCase):
         """Test getting non-existent page."""
         url = reverse('person-list')
         response = self.client.get(url, {'page': 999})
-        
+
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('Страница 999 не найдена', str(response.data))
 
@@ -79,14 +79,14 @@ class PersonListAPITestCase(TestCase):
         """Test that persons are ordered by created_at descending."""
         url = reverse('person-list')
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
+
         # Check that results are ordered by created_at descending
         results = response.data['results']
         for i in range(len(results) - 1):
             self.assertGreaterEqual(
-                results[i]['created_at'], 
+                results[i]['created_at'],
                 results[i + 1]['created_at']
             )
 
@@ -94,9 +94,9 @@ class PersonListAPITestCase(TestCase):
         """Test pagination metadata is correct."""
         url = reverse('person-list')
         response = self.client.get(url, {'page': 2, 'page_size': 5})
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
+
         # Check pagination metadata
         self.assertEqual(response.data['count'], 15)
         self.assertEqual(response.data['total_pages'], 3)

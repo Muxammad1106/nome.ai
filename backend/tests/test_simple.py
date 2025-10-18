@@ -16,7 +16,7 @@ class SimpleTestCase(TestCase):
         """Test health check endpoint."""
         url = reverse('health-check')
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], 'ok')
 
@@ -24,7 +24,7 @@ class SimpleTestCase(TestCase):
         """Test person list when empty."""
         url = reverse('person-list')
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 0)
         self.assertEqual(len(response.data['results']), 0)

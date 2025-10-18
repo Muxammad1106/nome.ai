@@ -176,34 +176,65 @@ class PersonListSerializer(serializers.ModelSerializer):
 
 
 # Сериализаторы для статистики
+class VisitCountDataSerializer(serializers.Serializer):
+    """Сериализатор для данных статистики посещений."""
+    date = serializers.CharField()
+    value = serializers.IntegerField()
+
+
 class VisitCountSerializer(serializers.Serializer):
     """Сериализатор для статистики посещений."""
-    date = serializers.DateField()
-    value = serializers.IntegerField()
+    type = serializers.CharField()
+    total_visits = serializers.IntegerField()
+    data = VisitCountDataSerializer(many=True)
+
+
+class BodyTypeStatsDataSerializer(serializers.Serializer):
+    """Сериализатор для данных статистики типов телосложения."""
+    type = serializers.CharField()
+    percentage = serializers.FloatField()
 
 
 class BodyTypeStatsSerializer(serializers.Serializer):
     """Сериализатор для статистики типов телосложения."""
+    total_people = serializers.IntegerField()
+    data = BodyTypeStatsDataSerializer(many=True)
+
+
+class GenderStatsDataSerializer(serializers.Serializer):
+    """Сериализатор для данных статистики полов."""
     type = serializers.CharField()
     percentage = serializers.FloatField()
 
 
 class GenderStatsSerializer(serializers.Serializer):
     """Сериализатор для статистики полов."""
-    type = serializers.CharField()
-    percentage = serializers.FloatField()
+    total_people = serializers.IntegerField()
+    data = GenderStatsDataSerializer(many=True)
 
 
-class EmotionStatsSerializer(serializers.Serializer):
-    """Сериализатор для статистики эмоций."""
+class EmotionStatsDataSerializer(serializers.Serializer):
+    """Сериализатор для данных статистики эмоций."""
     type = serializers.CharField()
     value = serializers.IntegerField()
 
 
-class AgeStatsSerializer(serializers.Serializer):
-    """Сериализатор для статистики возрастов."""
+class EmotionStatsSerializer(serializers.Serializer):
+    """Сериализатор для статистики эмоций."""
+    total_people = serializers.IntegerField()
+    data = EmotionStatsDataSerializer(many=True)
+
+
+class AgeStatsDataSerializer(serializers.Serializer):
+    """Сериализатор для данных статистики возрастов."""
     type = serializers.CharField()
     percentage = serializers.FloatField()
+
+
+class AgeStatsSerializer(serializers.Serializer):
+    """Сериализатор для статистики возрастов."""
+    total_people = serializers.IntegerField()
+    data = AgeStatsDataSerializer(many=True)
 
 
 # Сериализаторы для CartProduct
@@ -286,6 +317,7 @@ class PersonOrderHistorySerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
     cart_created_at = serializers.DateTimeField()
     cart_updated_at = serializers.DateTimeField()
+    table_number = serializers.IntegerField()
     products = serializers.ListField(
         child=serializers.DictField(),
         help_text="Список товаров в заказе"
@@ -300,3 +332,158 @@ class PersonOrderHistoryResponseSerializer(serializers.Serializer):
     person_name = serializers.CharField()
     total_orders = serializers.IntegerField()
     orders = PersonOrderHistorySerializer(many=True)
+
+
+class CartCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания корзины."""
+
+    class Meta:
+        model = Cart
+        fields = (
+            "organization",
+            "person",
+            "table_number"
+        )
+
+    def validate(self, data):
+        """Валидация данных для создания корзины."""
+        organization = data.get('organization')
+        person = data.get('person')
+
+        # Проверяем, что Person принадлежит указанной организации
+        if person and organization:
+            if person.organization != organization:
+                raise serializers.ValidationError(
+                    "Person должен принадлежать указанной организации"
+                )
+
+        return data
+
+
+class CartSerializer(serializers.ModelSerializer):
+    """Сериализатор для корзины."""
+
+    class Meta:
+        model = Cart
+        fields = (
+            "id",
+            "organization",
+            "person",
+            "table_number",
+            "created_at",
+            "updated_at"
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    """Сериализатор для продукта."""
+
+    class Meta:
+        model = Product
+        fields = (
+            "id",
+            "organization",
+            "name",
+            "created_at",
+            "updated_at"
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+
+class CartProductDetailSerializer(serializers.ModelSerializer):
+    """Детальный сериализатор для CartProduct с информацией о продукте."""
+
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    product_id = serializers.UUIDField(source='product.id', read_only=True)
+
+    class Meta:
+        model = CartProduct
+        fields = (
+            "id",
+            "product_id",
+            "product_name",
+            "created_at",
+            "updated_at"
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+
+class CartDetailSerializer(serializers.ModelSerializer):
+    """Детальный сериализатор для Cart с товарами."""
+
+    cart_products = CartProductDetailSerializer(source='cartproduct_set', many=True, read_only=True)
+    total_products = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Cart
+        fields = (
+            "id",
+            "table_number",
+            "cart_products",
+            "total_products",
+            "created_at",
+            "updated_at"
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+    def get_total_products(self, obj):
+        """Возвращает общее количество товаров в корзине."""
+        return obj.cartproduct_set.count()
+
+
+class PersonDetailSerializer(serializers.ModelSerializer):
+    """Детальный сериализатор для Person со всеми корзинами и товарами."""
+
+    carts = CartDetailSerializer(many=True, read_only=True)
+    total_carts = serializers.SerializerMethodField()
+    total_products_in_carts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Person
+        fields = (
+            "id",
+            "organization",
+            "full_name",
+            "phone_number",
+            "age",
+            "gender",
+            "emotion",
+            "body_type",
+            "entry_time",
+            "exit_time",
+            "image",
+            "carts",
+            "total_carts",
+            "total_products_in_carts",
+            "created_at",
+            "updated_at"
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+    def get_total_carts(self, obj):
+        """Возвращает общее количество корзин у Person."""
+        return obj.carts.count()
+
+    def get_total_products_in_carts(self, obj):
+        """Возвращает общее количество товаров во всех корзинах Person."""
+        total = 0
+        for cart in obj.carts.all():
+            total += cart.cartproduct_set.count()
+        return total
+
+
+class PersonSummarySerializer(serializers.Serializer):
+    """Сериализатор для сводки по Person."""
+
+    person_id = serializers.UUIDField()
+    person_name = serializers.CharField()
+    total_visits = serializers.IntegerField()
+    favorite_table = serializers.IntegerField(allow_null=True)
+    favorite_dishes = serializers.ListField(
+        child=serializers.DictField(),
+        help_text="Список любимых блюд с количеством заказов"
+    )
+    ai_summary = serializers.CharField(help_text="Краткая сводка от ИИ")
+    last_visit = serializers.DateTimeField(allow_null=True)
+    total_spent_items = serializers.IntegerField(help_text="Общее количество заказанных блюд")

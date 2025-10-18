@@ -39,9 +39,9 @@ class PersonUpdateAPITestCase(TestCase):
         }
 
         response = self.client.put(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
+
         # Refresh person from database
         self.person.refresh_from_db()
         self.assertEqual(self.person.full_name, 'Updated Name')
@@ -56,9 +56,9 @@ class PersonUpdateAPITestCase(TestCase):
         }
 
         response = self.client.put(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
+
         # Refresh person from database
         self.person.refresh_from_db()
         self.assertEqual(self.person.age, 35)
@@ -72,7 +72,7 @@ class PersonUpdateAPITestCase(TestCase):
         data = {'age': 30}
 
         response = self.client.put(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('Person не найден', str(response.data))
 
@@ -85,7 +85,7 @@ class PersonUpdateAPITestCase(TestCase):
         }
 
         response = self.client.put(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_person_empty_data(self):
@@ -94,5 +94,5 @@ class PersonUpdateAPITestCase(TestCase):
         data = {}
 
         response = self.client.put(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)

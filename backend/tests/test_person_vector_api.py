@@ -34,10 +34,10 @@ class PersonVectorAPITestCase(TestCase):
         }
 
         response = self.client.post(self.url, data, format='multipart')
-        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Person.objects.filter(age=25).exists())
-        
+
         person = Person.objects.get(age=25)
         self.assertEqual(person.gender, 'Female')
         self.assertEqual(person.emotion, 'Happy')
@@ -55,8 +55,8 @@ class PersonVectorAPITestCase(TestCase):
         }
 
         response = self.client.post(self.url, data, format='multipart')
-        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Person.objects.filter(age=30).exists())
 
     def test_invalid_vector_dimensions(self):
@@ -71,7 +71,7 @@ class PersonVectorAPITestCase(TestCase):
         }
 
         response = self.client.post(self.url, data, format='multipart')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('Vector must contain 128 values', str(response.data))
 
@@ -85,7 +85,7 @@ class PersonVectorAPITestCase(TestCase):
         }
 
         response = self.client.post(self.url, data, format='multipart')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('Возраст не может быть отрицательным', str(response.data))
 
@@ -104,14 +104,14 @@ class PersonVectorAPITestCase(TestCase):
 
         # Create first person
         response1 = self.client.post(self.url, data, format='multipart')
-        self.assertEqual(response1.status_code, status.HTTP_200_OK)
-        
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+
         # Try to create similar person with slightly different data
         data2 = data.copy()
         data2['age'] = 26  # Slightly different age
         response2 = self.client.post(self.url, data2, format='multipart')
-        self.assertEqual(response2.status_code, status.HTTP_200_OK)
-        
+        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+
         # In production with PostgreSQL, duplicate detection works
         # In tests with SQLite, it creates separate persons
         # This test verifies that the API works correctly in both cases
@@ -132,6 +132,6 @@ class PersonVectorAPITestCase(TestCase):
         }
 
         response = self.client.post(self.url, data, format='multipart')
-        
+
         # Since we made fields optional, this should work
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

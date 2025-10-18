@@ -16,7 +16,7 @@ class CartProductAPITestCase(TestCase):
             name="Test Organization",
             private_key="TEST001"
         )
-        
+
         self.person = Person.objects.create(
             organization=self.organization,
             full_name="Test Person",
@@ -26,12 +26,12 @@ class CartProductAPITestCase(TestCase):
             emotion="Happy",
             body_type="Normal"
         )
-        
+
         self.cart = Cart.objects.create(
             organization=self.organization,
             person=self.person
         )
-        
+
         self.products = [
             Product.objects.create(
                 organization=self.organization,
@@ -58,7 +58,7 @@ class CartProductAPITestCase(TestCase):
         }
 
         response = self.client.post(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn('message', response.data)
         self.assertIn('created_count', response.data)
@@ -84,7 +84,7 @@ class CartProductAPITestCase(TestCase):
         }
 
         response = self.client.post(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('Дублирующаяся комбинация', str(response.data))
 
@@ -94,7 +94,7 @@ class CartProductAPITestCase(TestCase):
         data = {'cart_products': []}
 
         response = self.client.post(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_bulk_cart_product_create_invalid_data(self):
@@ -111,13 +111,13 @@ class CartProductAPITestCase(TestCase):
         }
 
         response = self.client.post(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_bulk_cart_product_create_max_limit(self):
         """Test bulk cart product creation with max limit exceeded."""
         url = reverse('bulk-cart-product-create')
-        
+
         # Create 101 cart products (exceeds max limit of 100)
         cart_products = []
         for i in range(101):
@@ -126,9 +126,9 @@ class CartProductAPITestCase(TestCase):
                 'cart': self.cart.id,
                 'product': self.products[0].id
             })
-        
+
         data = {'cart_products': cart_products}
 
         response = self.client.post(url, data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

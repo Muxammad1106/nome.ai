@@ -37,7 +37,7 @@ class Person(BaseModel):
     entry_time = models.DateTimeField(blank=True, null=True)
     exit_time = models.DateTimeField(blank=True, null=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"Person {self.id}"
 
 
@@ -56,6 +56,7 @@ class Cart(BaseModel):
 
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name="carts")
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="carts")
+    table_number = models.IntegerField(blank=True, null=True)
     products = models.ManyToManyField(Product, through="CartProduct", related_name="carts")
 
     def __str__(self) -> str:
