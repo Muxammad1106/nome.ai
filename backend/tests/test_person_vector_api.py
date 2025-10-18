@@ -24,6 +24,7 @@ class PersonVectorAPITestCase(TestCase):
         """Test creating a person with vector data."""
         vector_data = [0.1] * 128  # 128-dimensional vector
         data = {
+            'organization_key': self.organization.private_key,
             'vector': json.dumps(vector_data),
             'age': 25,
             'gender': 'Female',
@@ -46,6 +47,7 @@ class PersonVectorAPITestCase(TestCase):
     def test_create_person_without_vector(self):
         """Test creating a person without vector data."""
         data = {
+            'organization_key': self.organization.private_key,
             'age': 30,
             'gender': 'Male',
             'emotion': 'Neutral',
@@ -63,6 +65,7 @@ class PersonVectorAPITestCase(TestCase):
         """Test with invalid vector dimensions."""
         vector_data = [0.1] * 64  # Wrong dimensions
         data = {
+            'organization_key': self.organization.private_key,
             'vector': json.dumps(vector_data),
             'age': 25,
             'gender': 'Female',
@@ -79,6 +82,7 @@ class PersonVectorAPITestCase(TestCase):
         """Test with invalid age values."""
         data = {
             'age': -5,  # Negative age
+            'organization_key': self.organization.private_key,
             'gender': 'Female',
             'emotion': 'Happy',
             'body_type': 'Normal'
@@ -93,6 +97,7 @@ class PersonVectorAPITestCase(TestCase):
         """Test duplicate person detection based on vector similarity."""
         vector_data = [0.1] * 128
         data = {
+            'organization_key': self.organization.private_key,
             'vector': json.dumps(vector_data),
             'age': 25,
             'gender': 'Female',
@@ -128,6 +133,7 @@ class PersonVectorAPITestCase(TestCase):
         """Test with missing required fields."""
         data = {
             'age': 25,
+            'organization_key': self.organization.private_key,
             # Missing gender, emotion, body_type
         }
 
