@@ -220,7 +220,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_ALL_ORIGINS = False  # Only allow specific origins for security
+CORS_ALLOW_ALL_ORIGINS = True  # Only allow specific origins for security
 
 CORS_ALLOW_HEADERS = [
     'accept',
