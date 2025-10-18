@@ -27,10 +27,11 @@ type LabelProp = {
 
 // Vars
 const data = [
-  { name: 'R&D', value: 50, color: '#00d4bd' },
-  { name: 'Operational', value: 85, color: '#ffe700' },
-  { name: 'Networking', value: 16, color: '#FFA1A1' },
-  { name: 'Hiring', value: 50, color: '#826bf8' }
+  { name: 'Calm', value: 50, color: '#00d4bd' },
+  { name: 'Happy', value: 85, color: '#ffe700' },
+  { name: 'Neutral', value: 16, color: '#FFA1A1' },
+  { name: 'Angry', value: 50, color: '#cd3c3c' },
+  { name: 'Surprised', value: 50, color: '#826bf8' },
 ]
 
 const RADIAN = Math.PI / 180
@@ -54,7 +55,7 @@ const renderCustomizedLabel = (props: LabelProp) => {
 const RechartsPieChart = () => {
   return (
     <Card>
-      <CardHeader title='Expense Ratio' subheader='Spending on various categories' />
+      <CardHeader title='Emotion' />
       <CardContent>
         <AppRecharts>
           <div className='bs-[350px]'>

@@ -43,7 +43,7 @@ const CustomTooltip = (props: TooltipProps<any, any>) => {
   if (active && payload) {
     return (
       <div className='recharts-custom-tooltip'>
-        <Typography fontSize='0.875rem' color='text.primary'>{`${payload[0].value}%`}</Typography>
+        <Typography fontSize='0.875rem' color='text.primary'>{`${payload[0].value}`}</Typography>
       </div>
     )
   }
@@ -58,8 +58,8 @@ const RechartsLineChart = () => {
   return (
     <Card>
       <CardHeader
-        title='Balance'
-        subheader='Commercial networks & enterprises'
+        title='Customers traffic'
+        subheader=''
         sx={{
           flexDirection: ['column', 'row'],
           alignItems: ['flex-start', 'center'],

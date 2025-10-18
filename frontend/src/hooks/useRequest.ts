@@ -1,4 +1,4 @@
-import { type Dispatch, type  SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 
 import type { AxiosRequestConfig } from 'axios'
 
@@ -63,7 +63,8 @@ function useRequest<T = any>(config?: AxiosRequestConfig, options: RequestOption
 
   useEffect(() => {
     const method = config?.method?.toLowerCase() || 'get'
-    const shouldMutate = config && (method === 'get' || options.immediate)
+    
+    const shouldMutate = config && (options.immediate !== undefined ? options.immediate : method === 'get')
 
     if (shouldMutate) {
       mutate()

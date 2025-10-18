@@ -29,45 +29,21 @@ const AppRecharts = dynamic(() => import('@/libs/styles/AppRecharts'))
 // Vars
 const data = [
   {
-    subject: 'Battery',
-    'iPhone 11': 41,
-    'Samsung s20': 65
+    subject: 'Normal',
+    'Man': 41,
   },
   {
-    subject: 'Brand',
-    'iPhone 11': 64,
-    'Samsung s20': 46
+    subject: 'Athletic',
+    'Man': 64,
   },
   {
-    subject: 'Camera',
-    'iPhone 11': 81,
-    'Samsung s20': 42
+    subject: 'Heavy',
+    'Man': 81,
   },
   {
-    subject: 'Memory',
-    'iPhone 11': 60,
-    'Samsung s20': 25
+    subject: 'Slim',
+    'Man': 60,
   },
-  {
-    subject: 'Storage',
-    'iPhone 11': 42,
-    'Samsung s20': 58
-  },
-  {
-    subject: 'Display',
-    'iPhone 11': 42,
-    'Samsung s20': 63
-  },
-  {
-    subject: 'OS',
-    'iPhone 11': 33,
-    'Samsung s20': 76
-  },
-  {
-    subject: 'Price',
-    'iPhone 11': 23,
-    'Samsung s20': 43
-  }
 ]
 
 const CustomTooltip = (props: TooltipProps<any, any>) => {
@@ -99,7 +75,7 @@ const CustomTooltip = (props: TooltipProps<any, any>) => {
 const RechartsRadarChart = () => {
   return (
     <Card>
-      <CardHeader title='Mobile Comparison' />
+      <CardHeader title='Body type segmentation' />
       <CardContent>
         <AppRecharts>
           <div className='bs-[350px]'>
@@ -109,8 +85,8 @@ const RechartsRadarChart = () => {
                 <PolarAngleAxis dataKey='subject' />
                 <PolarRadiusAxis />
                 <Tooltip content={CustomTooltip} />
-                <Radar dataKey='iPhone 11' stroke='#fde802' fill='#fde802' fillOpacity={1} />
-                <Radar dataKey='Samsung s20' stroke='#9b88fa' fill='#9b88fa' fillOpacity={0.8} />
+                <Radar dataKey='Man' stroke='#fde802' fill='#fde802' fillOpacity={1} />
+                {/* <Radar dataKey='Samsung s20' stroke='#9b88fa' fill='#9b88fa' fillOpacity={0.8} /> */}
               </RadarChart>
             </ResponsiveContainer>
           </div>
@@ -118,12 +94,12 @@ const RechartsRadarChart = () => {
         <div className='flex justify-center gap-6'>
           <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#fde802' } }}>
             <i className='tabler-circle-filled text-xs' />
-            <Typography variant='body2'>iPhone 11</Typography>
+            <Typography variant='body2'>Man</Typography>
           </Box>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#9b88fa' } }}>
+          {/* <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#9b88fa' } }}>
             <i className='tabler-circle-filled text-xs' />
             <Typography variant='body2'>Samsung s20</Typography>
-          </Box>
+          </Box> */}
         </div>
       </CardContent>
     </Card>
