@@ -46,7 +46,9 @@ class PersonVectorView(APIView):
             person = serializer.save()
             response_serializer = PersonVectorSerializer(person)
 
-            notify_person_joined(response_serializer.data)
+            payload = response_serializer.data
+            payload.pop("organization_key")
+            notify_person_joined(payload)
 
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         else:
