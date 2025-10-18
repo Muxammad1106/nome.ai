@@ -1,0 +1,1 @@
+export const ORGANIZATION_KEY = process.env.NEXT_PUBLIC_ORGANIZATION_KEY

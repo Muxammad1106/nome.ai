@@ -4,34 +4,46 @@ import { useCallback } from 'react'
 
 import { Grid, CircularProgress, Typography } from '@mui/material'
 
-import type { PersonEventType, PersonType } from '@/types'
+import type { PersonEventType, PersonType } from '../../../../../types'
 
-import UserCard from '@/components/dashboard/UserCard'
-import { useWebSocketPersonEvents } from '@/hooks/useWebSocketPersonEvents'
-import { usePersonActionList } from '@/services/persons'
+import UserCard from '../../../../../components/dashboard/UserCard'
+import { useWebSocketPersonEvents } from '../../../../../hooks/useWebSocketPersonEvents'
+import { usePersonActionList } from '../../../../../services/persons'
 
 export default function Dashboard() {
   const { data: personList, setData: setPersonList, loading } = usePersonActionList()
 
+  // Utility function to remove person if exists and add to front
+  const addPersonToFront = useCallback(
+    (person: PersonType) => {
+      setPersonList(prevData => {
+        if (!prevData) {
+          return {
+            count: 1,
+            results: [person]
+          }
+        }
+
+        // Remove person if exists and add to front
+        const filteredResults = prevData.results.filter(item => item.id !== person.id)
+        const newCount = filteredResults.length + 1
+
+        return {
+          count: newCount,
+          results: [person, ...filteredResults]
+        }
+      })
+    },
+    [setPersonList]
+  )
+
   const handleMessage = useCallback(
     (data: PersonEventType) => {
       if (data.event === 'person_joined' && data.person) {
-        setPersonList(prevData => {
-          if (!prevData) {
-            return {
-              count: 1,
-              results: [data.person]
-            }
-          }
-
-          return {
-            count: prevData.count + 1,
-            results: [data.person, ...prevData.results]
-          }
-        })
+        addPersonToFront(data.person)
       }
     },
-    [setPersonList]
+    [addPersonToFront]
   )
 
   const { isConnected } = useWebSocketPersonEvents({ onMessage: handleMessage })
@@ -39,11 +51,18 @@ export default function Dashboard() {
   const handlePersonUpdate = useCallback(
     (updatedPerson: PersonType) => {
       setPersonList(prevData => {
-        if (!prevData) return prevData
+        if (!prevData) {
+          return {
+            count: 1,
+            results: [updatedPerson]
+          }
+        }
+
+        const updatedResults = prevData.results.map(item => (item.id === updatedPerson.id ? updatedPerson : item))
 
         return {
-          ...prevData,
-          results: prevData.results.map(person => (person.id === updatedPerson.id ? updatedPerson : person))
+          count: prevData.count,
+          results: updatedResults
         }
       })
     },

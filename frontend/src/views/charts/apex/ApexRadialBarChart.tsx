@@ -15,22 +15,38 @@ import type { ApexOptions } from 'apexcharts'
 // Styled Component Imports
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
-// Vars
-const radialBarColors = {
-  series2: '#32baff',
-  series4: '#7367f0',
+interface ApexRadialBarChartProps {
+  data?: { type: string; percentage: number }[]
 }
 
-const ApexRadialBarChart = () => {
+const ApexRadialBarChart = ({ data }: ApexRadialBarChartProps) => {
   // Hooks
   const theme = useTheme()
 
   // Vars
   const textSecondary = 'var(--mui-palette-text-secondary)'
 
+  const defaultData = [
+    { type: 'Man', percentage: 57 },
+    { type: 'Woman', percentage: 43 }
+  ]
+
+  const chartData = data || defaultData
+  const labels = chartData.map(item => item.type)
+  const series = chartData.map(item => item.percentage)
+
+  // Generate colors dynamically based on data length
+  const generateColors = (length: number) => {
+    const baseColors = ['#32baff', '#7367f0', '#ff9f43', '#00d4bd', '#ffe700', '#cd3c3c']
+
+    return Array.from({ length }, (_, index) => baseColors[index % baseColors.length])
+  }
+
+  const colors = generateColors(chartData.length)
+
   const options: ApexOptions = {
     stroke: { lineCap: 'round' },
-    labels: ['Man', 'Woman'],
+    labels: labels,
     legend: {
       show: true,
       fontSize: '13px',
@@ -45,7 +61,7 @@ const ApexRadialBarChart = () => {
         horizontal: 9
       }
     },
-    colors: [radialBarColors.series2, radialBarColors.series4],
+    colors: colors,
     plotOptions: {
       radialBar: {
         hollow: { size: '30%' },
@@ -65,12 +81,12 @@ const ApexRadialBarChart = () => {
           total: {
             show: true,
             fontWeight: 500,
-            label: 'Comments',
+            label: 'Gender',
             fontSize: '1.125rem',
             color: 'var(--mui-palette-text-primary)',
             formatter: function (w) {
               const totalValue =
-                w.globals.seriesTotals.reduce((a: any, b: any) => {
+                w.globals.seriesTotals.reduce((a: number, b: number) => {
                   return a + b
                 }, 0) / w.globals.series.length
 
@@ -96,7 +112,7 @@ const ApexRadialBarChart = () => {
     <Card>
       <CardHeader title='Gender' />
       <CardContent>
-        <AppReactApexCharts type='radialBar' width='100%' height={400} options={options} series={[57,43]} />
+        <AppReactApexCharts type='radialBar' width='100%' height={400} options={options} series={series} />
       </CardContent>
     </Card>
   )

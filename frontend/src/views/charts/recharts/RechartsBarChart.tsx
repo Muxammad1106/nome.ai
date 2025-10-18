@@ -93,7 +93,7 @@ const data = [
   }
 ]
 
-const CustomTooltip = (props: TooltipProps<any, any>) => {
+const CustomTooltip = (props: TooltipProps<number, string>) => {
   // Props
   const { active, payload } = props
 
@@ -104,11 +104,12 @@ const CustomTooltip = (props: TooltipProps<any, any>) => {
         <Divider />
         {props &&
           props.payload &&
-          props.payload.map((i: any) => {
+          props.payload.length > 0 &&
+          props.payload.map(i => {
             return (
-              <Box key={i.dataKey} className='flex items-center gap-2.5' sx={{ '& i': { color: i.fill } }}>
+              <Box key={i.dataKey} className='flex items-center gap-2.5' sx={{ '& i': { color: '#826af9' } }}>
                 <i className='tabler-circle-filled text-[10px]' />
-                <Typography variant='body2'>{`${i.dataKey} : ${i.payload[i.dataKey]}`}</Typography>
+                <Typography variant='body2'>{`${i.dataKey} : ${i.payload?.[i.dataKey as string] || ''}`}</Typography>
               </Box>
             )
           })}

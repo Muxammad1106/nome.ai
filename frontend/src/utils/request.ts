@@ -3,6 +3,7 @@ import axios from 'axios'
 import humps from 'humps'
 
 import { auth } from './auth'
+import { ORGANIZATION_KEY } from './organization'
 
 export const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
 
@@ -35,7 +36,7 @@ baseAxios.interceptors.request.use(config => ({
 export default baseAxios
 
 export async function request(options: AxiosRequestConfig, isPublic = true) {
-  const params = { ...options.params }
+  const params = { ...options.params, organizationKey: ORGANIZATION_KEY || '' }
 
   options = isPublic ? options : { ...options, ...auth(), params }
   const { data } = await baseAxios(options)
