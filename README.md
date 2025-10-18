@@ -5,6 +5,7 @@
 ### Quick Links
 - **[📚 Documentation Hub](backend/docs/README.md)** - Complete documentation index and navigation
 - **[🔗 API Reference](backend/docs/API_REFERENCE.md)** - Complete API documentation with examples and SDK code
+- **[🤖 AI Features Guide](backend/docs/AI_FEATURES.md)** - AI-powered customer insights and configuration
 - **[🚀 Deployment Guide](backend/docs/DEPLOYMENT.md)** - Production deployment instructions and configuration
 - **[🧪 Testing Guide](backend/docs/TESTING.md)** - Comprehensive testing documentation and best practices
 
@@ -57,6 +58,7 @@ Nome.ai is a cutting-edge facial recognition and visitor analytics system design
 
 ### Key Capabilities
 - **Facial Recognition**: Advanced vector-based person identification using 128-dimensional embeddings
+- **AI-Powered Analytics**: Personalized customer preference analysis using advanced AI
 - **Real-time Analytics**: Live visitor statistics and demographic analysis
 - **Multi-organization Support**: Scalable architecture supporting multiple business entities
 - **RESTful API**: Clean, well-documented REST endpoints with OpenAPI/Swagger integration
@@ -70,12 +72,14 @@ Nome.ai is a cutting-edge facial recognition and visitor analytics system design
 | **👤 Person Management** | `POST /api/client/person/` | Create/update person with vector data |
 | | `PUT /api/client/person/{id}/` | Update person information |
 | | `GET /api/client/persons/` | List all persons (paginated) |
+| | `GET /api/client/person/{id}/detail/` | Get person details with carts |
+| | `GET /api/client/person/{id}/summary/` | Get person summary with AI analysis |
+| | `GET /api/client/person/{id}/orders/` | Get person's order history |
 | **📊 Statistics** | `GET /api/client/statistics/visit-count/` | Visit count statistics |
 | | `GET /api/client/statistics/gender/` | Gender distribution |
 | | `GET /api/client/statistics/age/` | Age group statistics |
 | | `GET /api/client/statistics/emotion/` | Emotion analysis |
 | **🛒 Cart Management** | `POST /api/client/cart-products/bulk/` | Bulk create cart products |
-| | `GET /api/client/person/{id}/orders/` | Get person's order history |
 | **🔐 Authentication** | `POST /api/auth/login/` | User login |
 | | `GET /api/auth/profile/` | Get user profile |
 
@@ -141,6 +145,8 @@ backend/
 - **Vector-based Recognition**: Store and compare 128-dimensional facial embeddings
 - **Duplicate Detection**: Automatic detection of similar faces using cosine similarity
 - **Comprehensive Profiles**: Age, gender, emotion, body type tracking
+- **AI-Powered Insights**: Personalized customer preference analysis
+- **Smart Categorization**: Automatic age group categorization (8 categories)
 - **Image Storage**: Secure image upload and management
 - **Real-time Updates**: WebSocket notifications for new person detection
 
@@ -189,6 +195,8 @@ backend/
 - `POST /api/client/person/` - Create/update person with vector data
 - `PUT /api/client/person/{id}/` - Update person information
 - `GET /api/client/persons/` - List all persons (paginated)
+- `GET /api/client/person/{id}/detail/` - Get person details with carts and products
+- `GET /api/client/person/{id}/summary/` - Get person summary with AI analysis ⭐
 - `GET /api/client/person/{id}/orders/` - Get person's order history
 
 #### Statistics (`/api/client/statistics/`)
@@ -276,6 +284,7 @@ DJANGO_SECRET_KEY=your-secret-key
 DJANGO_DEBUG=true
 DATABASE_URL=postgresql://user:password@localhost:5432/nomeai
 REDIS_URL=redis://localhost:6379/0
+OPENAI_API_KEY=your-ai-api-key  # Required for AI-powered features
 ```
 
 ## Database Schema
@@ -440,7 +449,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### Detailed Guides
 - **[📚 Documentation Hub](backend/docs/README.md)** - Complete documentation index and navigation
 - **[🔗 API Reference](backend/docs/API_REFERENCE.md)** - Complete API documentation with examples and SDK code
-- **[🚀 Deployment Guide](backend/docs/DEPLOYMENT.md)** - Production deployment instructions and configuration  
+- **[🤖 AI Features Guide](backend/docs/AI_FEATURES.md)** - AI-powered customer insights and configuration
+- **[🚀 Deployment Guide](backend/docs/DEPLOYMENT.md)** - Production deployment instructions and configuration
 - **[🧪 Testing Guide](backend/docs/TESTING.md)** - Comprehensive testing documentation and best practices
 
 ### Interactive Documentation
