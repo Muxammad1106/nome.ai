@@ -1,149 +1,523 @@
-# CartProduct 1 - Margherita Pizza в корзине Person 1
+# CartProduct для Cart 1 (Person 1 - Alice Smith)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440001
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
     cart: 950e8400-e29b-41d4-a716-446655440001
-    product: 750e8400-e29b-41d4-a716-446655440001
-    created_at: "2024-09-18T09:15:00Z"
-    updated_at: "2024-09-18T09:15:00Z"
+    product: 750e8400-e29b-41d4-a716-446655440001  # Margherita Pizza
+    created_at: "2024-09-18T08:10:00Z"
+    updated_at: "2024-09-18T08:10:00Z"
 
-# CartProduct 2 - Caesar Salad в корзине Person 2
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440002
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440002
-    product: 750e8400-e29b-41d4-a716-446655440002
-    created_at: "2024-09-19T14:30:00Z"
-    updated_at: "2024-09-19T14:30:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440001
+    product: 750e8400-e29b-41d4-a716-446655440002  # Caesar Salad
+    created_at: "2024-09-18T08:15:00Z"
+    updated_at: "2024-09-18T08:15:00Z"
 
-# CartProduct 3 - Beef Steak в корзине Person 3
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440003
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440003
-    product: 750e8400-e29b-41d4-a716-446655440003
-    created_at: "2024-09-20T11:45:00Z"
-    updated_at: "2024-09-20T11:45:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440001
+    product: 750e8400-e29b-41d4-a716-446655440003  # Beef Steak
+    created_at: "2024-09-18T08:20:00Z"
+    updated_at: "2024-09-18T08:20:00Z"
 
-# CartProduct 4 - Pasta Carbonara в корзине Person 4
+# CartProduct для Cart 2 (Person 2 - Bob Johnson)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440004
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440004
-    product: 750e8400-e29b-41d4-a716-446655440004
-    created_at: "2024-09-21T16:35:00Z"
-    updated_at: "2024-09-21T16:35:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440002
+    product: 750e8400-e29b-41d4-a716-446655440004  # Pasta Carbonara
+    created_at: "2024-09-19T08:20:00Z"
+    updated_at: "2024-09-19T08:20:00Z"
 
-# CartProduct 5 - Fish & Chips в корзине Person 5
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440005
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440005
-    product: 750e8400-e29b-41d4-a716-446655440005
-    created_at: "2024-09-22T11:00:00Z"
-    updated_at: "2024-09-22T11:00:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440002
+    product: 750e8400-e29b-41d4-a716-446655440005  # Fish & Chips
+    created_at: "2024-09-19T08:25:00Z"
+    updated_at: "2024-09-19T08:25:00Z"
 
-# CartProduct 6 - Chicken Burger в корзине Person 6
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440006
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440006
-    product: 750e8400-e29b-41d4-a716-446655440006
-    created_at: "2024-09-23T13:45:00Z"
-    updated_at: "2024-09-23T13:45:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440002
+    product: 750e8400-e29b-41d4-a716-446655440006  # Chicken Burger
+    created_at: "2024-09-19T08:30:00Z"
+    updated_at: "2024-09-19T08:30:00Z"
 
-# CartProduct 7 - Sushi Set в корзине Person 7
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440007
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440007
-    product: 750e8400-e29b-41d4-a716-446655440007
-    created_at: "2024-09-24T09:30:00Z"
-    updated_at: "2024-09-24T09:30:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440002
+    product: 750e8400-e29b-41d4-a716-446655440010  # Cappuccino
+    created_at: "2024-09-19T08:35:00Z"
+    updated_at: "2024-09-19T08:35:00Z"
 
-# CartProduct 8 - Chocolate Cake в корзине Person 8
+# CartProduct для Cart 3 (Person 3 - Carol Davis)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440008
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440008
-    product: 750e8400-e29b-41d4-a716-446655440008
-    created_at: "2024-09-25T15:15:00Z"
-    updated_at: "2024-09-25T15:15:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440003
+    product: 750e8400-e29b-41d4-a716-446655440007  # Sushi Set
+    created_at: "2024-09-20T09:05:00Z"
+    updated_at: "2024-09-20T09:05:00Z"
 
-# CartProduct 9 - Tiramisu в корзине Person 9
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440009
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440009
-    product: 750e8400-e29b-41d4-a716-446655440009
-    created_at: "2024-09-26T13:00:00Z"
-    updated_at: "2024-09-26T13:00:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440003
+    product: 750e8400-e29b-41d4-a716-446655440008  # Chocolate Cake
+    created_at: "2024-09-20T09:10:00Z"
+    updated_at: "2024-09-20T09:10:00Z"
 
-# CartProduct 10 - Cappuccino в корзине Person 10
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440010
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440010
-    product: 750e8400-e29b-41d4-a716-446655440010
-    created_at: "2024-09-27T08:45:00Z"
-    updated_at: "2024-09-27T08:45:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440003
+    product: 750e8400-e29b-41d4-a716-446655440009  # Tiramisu
+    created_at: "2024-09-20T09:15:00Z"
+    updated_at: "2024-09-20T09:15:00Z"
 
-# CartProduct 11 - Caesar Salad в корзине Person 11 (дополнительный товар)
+# CartProduct для Cart 4 (Person 4 - David Kim)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440011
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440001
-    product: 750e8400-e29b-41d4-a716-446655440002
-    created_at: "2024-09-28T14:15:00Z"
-    updated_at: "2024-09-28T14:15:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440004
+    product: 750e8400-e29b-41d4-a716-446655440001  # Margherita Pizza
+    created_at: "2024-09-21T09:15:00Z"
+    updated_at: "2024-09-21T09:15:00Z"
 
-# CartProduct 12 - Beef Steak в корзине Person 12 (дополнительный товар)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440012
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440002
-    product: 750e8400-e29b-41d4-a716-446655440003
-    created_at: "2024-09-29T11:30:00Z"
-    updated_at: "2024-09-29T11:30:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440004
+    product: 750e8400-e29b-41d4-a716-446655440002  # Caesar Salad
+    created_at: "2024-09-21T09:20:00Z"
+    updated_at: "2024-09-21T09:20:00Z"
 
-# CartProduct 13 - Pasta Carbonara в корзине Person 13 (дополнительный товар)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440013
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
-    cart: 950e8400-e29b-41d4-a716-446655440003
-    product: 750e8400-e29b-41d4-a716-446655440004
-    created_at: "2024-09-30T16:45:00Z"
-    updated_at: "2024-09-30T16:45:00Z"
+    cart: 950e8400-e29b-41d4-a716-446655440004
+    product: 750e8400-e29b-41d4-a716-446655440003  # Beef Steak
+    created_at: "2024-09-21T09:25:00Z"
+    updated_at: "2024-09-21T09:25:00Z"
 
-# CartProduct 14 - Fish & Chips в корзине Person 14 (дополнительный товар)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440014
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
     cart: 950e8400-e29b-41d4-a716-446655440004
-    product: 750e8400-e29b-41d4-a716-446655440005
-    created_at: "2024-10-01T10:15:00Z"
-    updated_at: "2024-10-01T10:15:00Z"
+    product: 750e8400-e29b-41d4-a716-446655440010  # Cappuccino
+    created_at: "2024-09-21T09:30:00Z"
+    updated_at: "2024-09-21T09:30:00Z"
 
-# CartProduct 15 - Chicken Burger в корзине Person 15 (дополнительный товар)
+# CartProduct для Cart 5 (Person 5 - Emily Zhang)
 - model: client.cartproduct
   pk: a50e8400-e29b-41d4-a716-446655440015
   fields:
     organization: 550e8400-e29b-41d4-a716-446655440001
     cart: 950e8400-e29b-41d4-a716-446655440005
-    product: 750e8400-e29b-41d4-a716-446655440006
-    created_at: "2024-10-02T14:00:00Z"
-    updated_at: "2024-10-02T14:00:00Z"
+    product: 750e8400-e29b-41d4-a716-446655440004  # Pasta Carbonara
+    created_at: "2024-09-22T10:05:00Z"
+    updated_at: "2024-09-22T10:05:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440016
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440005
+    product: 750e8400-e29b-41d4-a716-446655440005  # Fish & Chips
+    created_at: "2024-09-22T10:10:00Z"
+    updated_at: "2024-09-22T10:10:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440017
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440005
+    product: 750e8400-e29b-41d4-a716-446655440006  # Chicken Burger
+    created_at: "2024-09-22T10:15:00Z"
+    updated_at: "2024-09-22T10:15:00Z"
+
+# CartProduct для Cart 6 (Person 6 - Frank Miller)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440018
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440006
+    product: 750e8400-e29b-41d4-a716-446655440007  # Sushi Set
+    created_at: "2024-09-23T11:05:00Z"
+    updated_at: "2024-09-23T11:05:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440019
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440006
+    product: 750e8400-e29b-41d4-a716-446655440008  # Chocolate Cake
+    created_at: "2024-09-23T11:10:00Z"
+    updated_at: "2024-09-23T11:10:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440020
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440006
+    product: 750e8400-e29b-41d4-a716-446655440009  # Tiramisu
+    created_at: "2024-09-23T11:15:00Z"
+    updated_at: "2024-09-23T11:15:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440021
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440006
+    product: 750e8400-e29b-41d4-a716-446655440010  # Cappuccino
+    created_at: "2024-09-23T11:18:00Z"
+    updated_at: "2024-09-23T11:18:00Z"
+
+# CartProduct для Cart 7 (Person 7 - Grace Lee)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440022
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440007
+    product: 750e8400-e29b-41d4-a716-446655440001  # Margherita Pizza
+    created_at: "2024-09-24T11:35:00Z"
+    updated_at: "2024-09-24T11:35:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440023
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440007
+    product: 750e8400-e29b-41d4-a716-446655440002  # Caesar Salad
+    created_at: "2024-09-24T11:40:00Z"
+    updated_at: "2024-09-24T11:40:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440024
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440007
+    product: 750e8400-e29b-41d4-a716-446655440003  # Beef Steak
+    created_at: "2024-09-24T11:45:00Z"
+    updated_at: "2024-09-24T11:45:00Z"
+
+# CartProduct для Cart 8 (Person 8 - Henry Adams)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440025
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440008
+    product: 750e8400-e29b-41d4-a716-446655440004  # Pasta Carbonara
+    created_at: "2024-09-25T12:15:00Z"
+    updated_at: "2024-09-25T12:15:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440026
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440008
+    product: 750e8400-e29b-41d4-a716-446655440005  # Fish & Chips
+    created_at: "2024-09-25T12:20:00Z"
+    updated_at: "2024-09-25T12:20:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440027
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440008
+    product: 750e8400-e29b-41d4-a716-446655440006  # Chicken Burger
+    created_at: "2024-09-25T12:25:00Z"
+    updated_at: "2024-09-25T12:25:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440028
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440008
+    product: 750e8400-e29b-41d4-a716-446655440007  # Sushi Set
+    created_at: "2024-09-25T12:28:00Z"
+    updated_at: "2024-09-25T12:28:00Z"
+
+# CartProduct для Cart 9 (Person 9 - Isabella Torres)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440029
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440009
+    product: 750e8400-e29b-41d4-a716-446655440008  # Chocolate Cake
+    created_at: "2024-09-26T12:50:00Z"
+    updated_at: "2024-09-26T12:50:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440030
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440009
+    product: 750e8400-e29b-41d4-a716-446655440009  # Tiramisu
+    created_at: "2024-09-26T12:55:00Z"
+    updated_at: "2024-09-26T12:55:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440031
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440009
+    product: 750e8400-e29b-41d4-a716-446655440010  # Cappuccino
+    created_at: "2024-09-26T12:58:00Z"
+    updated_at: "2024-09-26T12:58:00Z"
+
+# CartProduct для Cart 10 (Person 10 - Jack Black)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440032
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440010
+    product: 750e8400-e29b-41d4-a716-446655440001  # Margherita Pizza
+    created_at: "2024-09-27T13:35:00Z"
+    updated_at: "2024-09-27T13:35:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440033
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440010
+    product: 750e8400-e29b-41d4-a716-446655440002  # Caesar Salad
+    created_at: "2024-09-27T13:40:00Z"
+    updated_at: "2024-09-27T13:40:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440034
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440010
+    product: 750e8400-e29b-41d4-a716-446655440003  # Beef Steak
+    created_at: "2024-09-27T13:45:00Z"
+    updated_at: "2024-09-27T13:45:00Z"
+
+# CartProduct для Cart 11 (Person 11 - Kevin Wilson)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440035
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440011
+    product: 750e8400-e29b-41d4-a716-446655440004  # Pasta Carbonara
+    created_at: "2024-10-01T08:10:00Z"
+    updated_at: "2024-10-01T08:10:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440036
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440011
+    product: 750e8400-e29b-41d4-a716-446655440005  # Fish & Chips
+    created_at: "2024-10-01T08:15:00Z"
+    updated_at: "2024-10-01T08:15:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440037
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440011
+    product: 750e8400-e29b-41d4-a716-446655440006  # Chicken Burger
+    created_at: "2024-10-01T08:20:00Z"
+    updated_at: "2024-10-01T08:20:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440038
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440011
+    product: 750e8400-e29b-41d4-a716-446655440007  # Sushi Set
+    created_at: "2024-10-01T08:25:00Z"
+    updated_at: "2024-10-01T08:25:00Z"
+
+# CartProduct для Cart 12 (Person 12 - Lisa Brown)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440039
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440012
+    product: 750e8400-e29b-41d4-a716-446655440008  # Chocolate Cake
+    created_at: "2024-10-02T09:20:00Z"
+    updated_at: "2024-10-02T09:20:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440040
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440012
+    product: 750e8400-e29b-41d4-a716-446655440009  # Tiramisu
+    created_at: "2024-10-02T09:25:00Z"
+    updated_at: "2024-10-02T09:25:00Z"
+
+# CartProduct для Cart 13 (Person 13 - Michael Taylor)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440041
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440013
+    product: 750e8400-e29b-41d4-a716-446655440010  # Cappuccino
+    created_at: "2024-10-03T10:35:00Z"
+    updated_at: "2024-10-03T10:35:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440042
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440013
+    product: 750e8400-e29b-41d4-a716-446655440001  # Margherita Pizza
+    created_at: "2024-10-03T10:40:00Z"
+    updated_at: "2024-10-03T10:40:00Z"
+
+# CartProduct для Cart 14 (Person 14 - Sarah Anderson)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440043
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440014
+    product: 750e8400-e29b-41d4-a716-446655440002  # Caesar Salad
+    created_at: "2024-10-04T11:50:00Z"
+    updated_at: "2024-10-04T11:50:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440044
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440014
+    product: 750e8400-e29b-41d4-a716-446655440003  # Beef Steak
+    created_at: "2024-10-04T11:55:00Z"
+    updated_at: "2024-10-04T11:55:00Z"
+
+# CartProduct для Cart 15 (Person 15 - Robert Garcia)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440045
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440015
+    product: 750e8400-e29b-41d4-a716-446655440004  # Pasta Carbonara
+    created_at: "2024-10-05T13:05:00Z"
+    updated_at: "2024-10-05T13:05:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440046
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440015
+    product: 750e8400-e29b-41d4-a716-446655440005  # Fish & Chips
+    created_at: "2024-10-05T13:10:00Z"
+    updated_at: "2024-10-05T13:10:00Z"
+
+# CartProduct для Cart 16 (Person 16 - Jennifer Martinez)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440047
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440016
+    product: 750e8400-e29b-41d4-a716-446655440006  # Chicken Burger
+    created_at: "2025-10-17T14:20:00Z"
+    updated_at: "2025-10-17T14:20:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440048
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440016
+    product: 750e8400-e29b-41d4-a716-446655440007  # Sushi Set
+    created_at: "2025-10-17T14:25:00Z"
+    updated_at: "2025-10-17T14:25:00Z"
+
+# CartProduct для Cart 17 (Person 17 - Christopher Lee)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440049
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440017
+    product: 750e8400-e29b-41d4-a716-446655440008  # Chocolate Cake
+    created_at: "2024-10-07T15:35:00Z"
+    updated_at: "2024-10-07T15:35:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440050
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440017
+    product: 750e8400-e29b-41d4-a716-446655440009  # Tiramisu
+    created_at: "2024-10-07T15:40:00Z"
+    updated_at: "2024-10-07T15:40:00Z"
+
+# CartProduct для Cart 18 (Person 18 - Amanda White)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440051
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440018
+    product: 750e8400-e29b-41d4-a716-446655440010  # Cappuccino
+    created_at: "2025-10-18T16:50:00Z"
+    updated_at: "2025-10-18T16:50:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440052
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440018
+    product: 750e8400-e29b-41d4-a716-446655440001  # Margherita Pizza
+    created_at: "2025-10-18T16:55:00Z"
+    updated_at: "2025-10-18T16:55:00Z"
+
+# CartProduct для Cart 19 (Person 19 - Daniel Rodriguez)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440053
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440019
+    product: 750e8400-e29b-41d4-a716-446655440002  # Caesar Salad
+    created_at: "2025-10-18T08:05:00Z"
+    updated_at: "2025-10-18T08:05:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440054
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440002
+    cart: 950e8400-e29b-41d4-a716-446655440019
+    product: 750e8400-e29b-41d4-a716-446655440003  # Beef Steak
+    created_at: "2025-10-18T08:10:00Z"
+    updated_at: "2025-10-18T08:10:00Z"
+
+# CartProduct для Cart 20 (Person 20 - Jessica Thompson)
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440055
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440020
+    product: 750e8400-e29b-41d4-a716-446655440004  # Pasta Carbonara
+    created_at: "2025-10-17T19:20:00Z"
+    updated_at: "2025-10-17T19:20:00Z"
+
+- model: client.cartproduct
+  pk: a50e8400-e29b-41d4-a716-446655440056
+  fields:
+    organization: 550e8400-e29b-41d4-a716-446655440001
+    cart: 950e8400-e29b-41d4-a716-446655440020
+    product: 750e8400-e29b-41d4-a716-446655440005  # Fish & Chips
+    created_at: "2025-10-17T19:25:00Z"
+    updated_at: "2025-10-17T19:25:00Z"
