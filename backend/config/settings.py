@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
+    "drf_spectacular",
     "channels",
 
     "core",
@@ -163,3 +164,39 @@ LOGOUT_REDIRECT_URL = '/'
 # Настройки сессий
 SESSION_COOKIE_AGE = 86400  # 24 часа
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+# Swagger/OpenAPI settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Nome.ai API',
+    'DESCRIPTION': 'API для системы распознавания лиц и аналитики посещений',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'Аутентификация пользователей'},
+        {'name': 'Person Management', 'description': 'Управление персонами'},
+        {'name': 'Statistics', 'description': 'Статистика и аналитика'},
+        {'name': 'Cart Management', 'description': 'Управление корзинами и товарами'},
+    ],
+    'CONTACT': {
+        'name': 'Nome.ai Team',
+        'email': 'support@nomeai.space',
+    },
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+}

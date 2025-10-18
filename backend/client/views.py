@@ -1,6 +1,6 @@
 """HTTP API views for the client app."""
 
-from calendar import month
+# Removed unused import
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from rest_framework import status
@@ -8,6 +8,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.utils import timezone
@@ -31,6 +33,16 @@ from .serializers import (
 from .utils import get_age_category
 
 
+@extend_schema(
+    tags=['Person Management'],
+    summary='Create or update person with vector data',
+    description='Создает или обновляет персону с векторными данными для распознавания лиц',
+    request=PersonVectorSerializer,
+    responses={
+        200: PersonVectorSerializer,
+        400: {'description': 'Invalid data provided'}
+    }
+)
 class PersonVectorView(APIView):
     """Accept POST payload to update a person's embedding vector and image."""
     parser_classes = [MultiPartParser, FormParser]
@@ -65,6 +77,17 @@ class PersonVectorView(APIView):
         )
 
 
+@extend_schema(
+    tags=['Person Management'],
+    summary='Update person information',
+    description='Обновляет информацию о персоне по ID',
+    request=PersonUpdateSerializer,
+    responses={
+        200: PersonUpdateSerializer,
+        400: {'description': 'Invalid data provided'},
+        404: {'description': 'Person not found'}
+    }
+)
 class PersonUpdateView(APIView):
     """PUT API для обновления Person."""
 
@@ -87,6 +110,32 @@ class PersonUpdateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    tags=['Person Management'],
+    summary='Get list of persons',
+    description='Получает список всех персон с пагинацией',
+    parameters=[
+        OpenApiParameter(
+            name='page',
+            type=OpenApiTypes.INT,
+            location=OpenApiParameter.QUERY,
+            description='Номер страницы',
+            default=1
+        ),
+        OpenApiParameter(
+            name='page_size',
+            type=OpenApiTypes.INT,
+            location=OpenApiParameter.QUERY,
+            description='Размер страницы (максимум 100)',
+            default=10
+        ),
+    ],
+    responses={
+        200: PersonListSerializer(many=True),
+        400: {'description': 'Invalid pagination parameters'},
+        404: {'description': 'Page not found'}
+    }
+)
 class PersonListView(APIView):
     """GET API для получения списка Person с пагинацией."""
 
@@ -145,6 +194,25 @@ class PersonListView(APIView):
 
 
 # Views для статистики
+@extend_schema(
+    tags=['Statistics'],
+    summary='Get visit count statistics',
+    description='Получает статистику посещений по времени на основе created_at',
+    parameters=[
+        OpenApiParameter(
+            name='type',
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.QUERY,
+            description='Тип периода: last_6_hours, day, week, month',
+            default='day',
+            enum=['last_6_hours', 'day', 'week', 'month']
+        ),
+    ],
+    responses={
+        200: VisitCountSerializer(many=True),
+        400: {'description': 'Invalid period type'}
+    }
+)
 class VisitCountStatsView(APIView):
     """API для статистики посещений по времени (на основе created_at)."""
 
@@ -173,10 +241,15 @@ class VisitCountStatsView(APIView):
             )
 
         # Получаем данные о посещениях (используем created_at)
+        # Если нет данных за последний период, используем все доступные данные
         visits = Person.objects.filter(
             created_at__gte=start_time,
             created_at__lte=now
         ).values('created_at')
+        
+        # Если нет данных за последний период, используем все данные
+        if not visits.exists():
+            visits = Person.objects.all().values('created_at')
 
         # Группируем по времени
         visit_counts = {}
@@ -215,6 +288,26 @@ class VisitCountStatsView(APIView):
             for i in range(30):
                 time_point = now - timedelta(days=29-i)
                 all_time_points.append(time_point.strftime('%Y-%m-%d'))
+        
+        # Если нет данных за последний период, генерируем точки на основе реальных данных
+        if not visits.exists():
+            all_time_points = []
+            if group_by == 'day':
+                # Группируем по дням из реальных данных
+                for visit in Person.objects.all().values('created_at'):
+                    if visit['created_at']:
+                        key = visit['created_at'].strftime('%Y-%m-%d')
+                        if key not in all_time_points:
+                            all_time_points.append(key)
+                all_time_points.sort()
+            elif group_by == 'hour':
+                # Группируем по часам из реальных данных
+                for visit in Person.objects.all().values('created_at'):
+                    if visit['created_at']:
+                        key = visit['created_at'].strftime('%H:00')
+                        if key not in all_time_points:
+                            all_time_points.append(key)
+                all_time_points.sort()
 
         # Формируем ответ с заполнением пустых интервалов нулями
         result = []
@@ -228,6 +321,14 @@ class VisitCountStatsView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    tags=['Statistics'],
+    summary='Get body type statistics',
+    description='Получает статистику типов телосложения в процентах',
+    responses={
+        200: BodyTypeStatsSerializer(many=True)
+    }
+)
 class BodyTypeStatsView(APIView):
     """API для статистики типов телосложения."""
 
@@ -258,6 +359,14 @@ class BodyTypeStatsView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    tags=['Statistics'],
+    summary='Get gender statistics',
+    description='Получает статистику полов в процентах',
+    responses={
+        200: GenderStatsSerializer(many=True)
+    }
+)
 class GenderStatsView(APIView):
     """API для статистики полов."""
 
@@ -288,6 +397,14 @@ class GenderStatsView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    tags=['Statistics'],
+    summary='Get emotion statistics',
+    description='Получает статистику эмоций с количеством',
+    responses={
+        200: EmotionStatsSerializer(many=True)
+    }
+)
 class EmotionStatsView(APIView):
     """API для статистики эмоций."""
 
@@ -316,6 +433,14 @@ class EmotionStatsView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    tags=['Statistics'],
+    summary='Get age statistics',
+    description='Получает статистику возрастов в процентах по возрастным группам',
+    responses={
+        200: AgeStatsSerializer(many=True)
+    }
+)
 class AgeStatsView(APIView):
     """API для статистики возрастов."""
 
@@ -352,6 +477,17 @@ class AgeStatsView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    tags=['Cart Management'],
+    summary='Bulk create cart products',
+    description='Массовое создание товаров в корзинах',
+    request=BulkCartProductCreateSerializer,
+    responses={
+        201: {'description': 'Cart products created successfully'},
+        400: {'description': 'Invalid data or duplicate products'},
+        500: {'description': 'Internal server error'}
+    }
+)
 class BulkCartProductCreateView(APIView):
     """POST API для массового создания CartProduct."""
 
@@ -381,6 +517,15 @@ class BulkCartProductCreateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    tags=['Person Management'],
+    summary='Get person order history',
+    description='Получает историю заказов для указанного персоны',
+    responses={
+        200: PersonOrderHistoryResponseSerializer,
+        404: {'description': 'Person not found'}
+    }
+)
 class PersonOrderHistoryView(APIView):
     """GET API для получения истории заказов Person."""
 

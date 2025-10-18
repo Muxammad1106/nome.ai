@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
 from django.contrib.auth import login, logout
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -17,12 +18,30 @@ from .serializers import (
 )
 
 
+@extend_schema(
+    tags=['System'],
+    summary='Health check',
+    description='Проверка состояния API',
+    responses={
+        200: {'description': 'API is healthy'}
+    }
+)
 @api_view(['GET'])
 def health_check(request):
     """Health check endpoint."""
     return Response({"status": "ok"})
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='User registration',
+    description='Регистрация нового пользователя',
+    request=UserRegistrationSerializer,
+    responses={
+        201: {'description': 'User registered successfully'},
+        400: {'description': 'Invalid data provided'}
+    }
+)
 class UserRegistrationView(APIView):
     """API для регистрации пользователя."""
     permission_classes = [AllowAny]
@@ -44,6 +63,16 @@ class UserRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='User login',
+    description='Вход пользователя в систему',
+    request=LoginSerializer,
+    responses={
+        200: {'description': 'Login successful'},
+        400: {'description': 'Invalid credentials'}
+    }
+)
 class LoginView(APIView):
     """API для входа в систему."""
     permission_classes = [AllowAny]
@@ -78,6 +107,14 @@ class LoginView(APIView):
         return ip
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='User logout',
+    description='Выход пользователя из системы',
+    responses={
+        200: {'description': 'Logout successful'}
+    }
+)
 class LogoutView(APIView):
     """API для выхода из системы."""
     permission_classes = [IsAuthenticated]
@@ -90,6 +127,15 @@ class LogoutView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='Get user profile',
+    description='Получение профиля текущего пользователя',
+    responses={
+        200: UserSerializer,
+        401: {'description': 'Authentication required'}
+    }
+)
 class UserProfileView(APIView):
     """API для профиля пользователя."""
     permission_classes = [IsAuthenticated]
@@ -111,6 +157,16 @@ class UserProfileView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='Change password',
+    description='Смена пароля пользователя',
+    request=ChangePasswordSerializer,
+    responses={
+        200: {'description': 'Password changed successfully'},
+        400: {'description': 'Invalid data provided'}
+    }
+)
 class ChangePasswordView(APIView):
     """API для смены пароля."""
     permission_classes = [IsAuthenticated]
@@ -130,6 +186,15 @@ class ChangePasswordView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='List users',
+    description='Получение списка пользователей (только для администраторов)',
+    responses={
+        200: {'description': 'List of users'},
+        403: {'description': 'Insufficient permissions'}
+    }
+)
 class UserListView(APIView):
     """API для списка пользователей (только для администраторов)."""
     permission_classes = [IsAuthenticated]
