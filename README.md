@@ -3,10 +3,10 @@
 ## 📚 Documentation
 
 ### Quick Links
-- **[📚 Documentation Hub](docs/README.md)** - Complete documentation index and navigation
-- **[🔗 API Reference](docs/API_REFERENCE.md)** - Complete API documentation with examples and SDK code
-- **[🚀 Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment instructions and configuration
-- **[🧪 Testing Guide](docs/TESTING.md)** - Comprehensive testing documentation and best practices
+- **[📚 Documentation Hub](backend/docs/README.md)** - Complete documentation index and navigation
+- **[🔗 API Reference](backend/docs/API_REFERENCE.md)** - Complete API documentation with examples and SDK code
+- **[🚀 Deployment Guide](backend/docs/DEPLOYMENT.md)** - Production deployment instructions and configuration
+- **[🧪 Testing Guide](backend/docs/TESTING.md)** - Comprehensive testing documentation and best practices
 
 ### Interactive Documentation
 - **Swagger UI**: Available at `/api/docs/` when running the server
@@ -438,10 +438,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📖 Additional Documentation
 
 ### Detailed Guides
-- **[📚 Documentation Hub](docs/README.md)** - Complete documentation index and navigation
-- **[🔗 API Reference](docs/API_REFERENCE.md)** - Complete API documentation with examples and SDK code
-- **[🚀 Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment instructions and configuration  
-- **[🧪 Testing Guide](docs/TESTING.md)** - Comprehensive testing documentation and best practices
+- **[📚 Documentation Hub](backend/docs/README.md)** - Complete documentation index and navigation
+- **[🔗 API Reference](backend/docs/API_REFERENCE.md)** - Complete API documentation with examples and SDK code
+- **[🚀 Deployment Guide](backend/docs/DEPLOYMENT.md)** - Production deployment instructions and configuration  
+- **[🧪 Testing Guide](backend/docs/TESTING.md)** - Comprehensive testing documentation and best practices
 
 ### Interactive Documentation
 - **Swagger UI**: Available at `/api/docs/` when running the server

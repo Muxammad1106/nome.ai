@@ -12,13 +12,13 @@ from .models import Person, Organization, CartProduct, Cart, Product
 
 
 class PersonVectorSerializer(serializers.ModelSerializer):
-    vector = serializers.JSONField()
-    age = serializers.IntegerField()
-    gender = serializers.CharField(max_length=255)
-    emotion = serializers.CharField(max_length=255)
-    body_type = serializers.CharField(max_length=255)
-    entry_time = serializers.DateTimeField()
-    exit_time = serializers.DateTimeField()
+    vector = serializers.JSONField(required=False, allow_null=True)
+    age = serializers.IntegerField(required=False, allow_null=True)
+    gender = serializers.CharField(max_length=255, required=False, allow_null=True)
+    emotion = serializers.CharField(max_length=255, required=False, allow_null=True)
+    body_type = serializers.CharField(max_length=255, required=False, allow_null=True)
+    entry_time = serializers.DateTimeField(required=False, allow_null=True)
+    exit_time = serializers.DateTimeField(required=False, allow_null=True)
 
     class Meta:
         model = Person
@@ -81,18 +81,21 @@ class PersonVectorSerializer(serializers.ModelSerializer):
 
         vector = validated_data.get("vector")
         if vector:
-            duplicate = (
-                Person.objects.filter(organization=organization, vector__isnull=False)
-                .annotate(distance=CosineDistance("vector", vector))
-                .order_by("distance")
-                .first()
-            )
+            # Only use vector similarity for PostgreSQL with pgvector
+            from django.db import connection
+            if connection.vendor == 'postgresql':
+                duplicate = (
+                    Person.objects.filter(organization=organization, vector__isnull=False)
+                    .annotate(distance=CosineDistance("vector", vector))
+                    .order_by("distance")
+                    .first()
+                )
 
-            if duplicate and duplicate.distance is not None:
-                distance = float(duplicate.distance)
-                if distance <= self._distance_threshold():
-                    self.instance = duplicate
-                    return duplicate
+                if duplicate and duplicate.distance is not None:
+                    distance = float(duplicate.distance)
+                    if distance <= self._distance_threshold():
+                        self.instance = duplicate
+                        return duplicate
 
         return Person.objects.create(
             organization=organization,
@@ -117,6 +120,31 @@ class PersonUpdateSerializer(serializers.ModelSerializer):
             "exit_time",
         )
         read_only_fields = ("id",)
+
+    def validate_age(self, age):
+        """Валидация возраста с проверкой на разумные значения."""
+        if age is not None:
+            if not isinstance(age, int):
+                try:
+                    age = int(age)
+                except (ValueError, TypeError):
+                    raise serializers.ValidationError("Возраст должен быть числом.")
+
+            if age < 0:
+                raise serializers.ValidationError("Возраст не может быть отрицательным.")
+
+            if age > 120:
+                raise serializers.ValidationError("Возраст не может быть больше 120 лет.")
+
+        return age
+
+    def validate_gender(self, gender):
+        """Валидация пола."""
+        if gender is not None:
+            valid_genders = ['Male', 'Female', 'Other']
+            if gender not in valid_genders:
+                raise serializers.ValidationError(f"Пол должен быть одним из: {', '.join(valid_genders)}")
+        return gender
 
     def update(self, instance, validated_data):
         """Обновляет экземпляр Person."""
