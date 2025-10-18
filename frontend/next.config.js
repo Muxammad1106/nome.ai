@@ -4,6 +4,20 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/en/dashboard',
+        permanent: true,
+      },
+      {
+        source: '/en',
+        destination: '/en/dashboard',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
