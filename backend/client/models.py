@@ -70,8 +70,5 @@ class CartProduct(BaseModel):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ("cart", "product")
-
     def __str__(self) -> str:
         return f"{self.cart} -> {self.product}"

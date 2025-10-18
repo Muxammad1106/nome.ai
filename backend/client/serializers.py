@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from django.db import connection
 from django.conf import settings
 from rest_framework import serializers
 from pgvector.django import CosineDistance
@@ -12,6 +13,7 @@ from .models import Person, Organization, CartProduct, Cart, Product
 
 
 class PersonVectorSerializer(serializers.ModelSerializer):
+    organization_key = serializers.CharField(write_only=True)
     vector = serializers.JSONField(required=False, allow_null=True)
     age = serializers.IntegerField(required=False, allow_null=True)
     gender = serializers.CharField(max_length=255, required=False, allow_null=True)
@@ -22,7 +24,7 @@ class PersonVectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("id", "vector", "image", "age", "gender", "emotion", "body_type", "entry_time", "exit_time")
+        fields = ("id", "organization_key", "vector", "image", "age", "gender", "emotion", "body_type", "entry_time", "exit_time")
         read_only_fields = ("id",)
 
     def validate_vector(self, v: Any):
@@ -59,7 +61,7 @@ class PersonVectorSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Возраст не может быть отрицательным.")
 
             if age > 100:
-                raise serializers.ValidationError("Возраст не может быть больше 120 лет.")
+                raise serializers.ValidationError("Возраст не может быть больше 100 лет.")
 
         return age
 
@@ -75,14 +77,16 @@ class PersonVectorSerializer(serializers.ModelSerializer):
         return 1.0 - similarity
 
     def create(self, validated_data: dict) -> Person:
-        organization = Organization.objects.all().first()
+        organization_key = validated_data.pop("organization_key", None)
+        if not organization_key:
+            raise serializers.ValidationError({"organization_key": "Необходимо указать ключ организации."})
+
+        organization = Organization.objects.filter(private_key=organization_key).first()
         if not organization:
-            organization = Organization.objects.create(name="Default Organization")
+            raise serializers.ValidationError({"organization_key": "Организация с указанным ключом не найдена."})
 
         vector = validated_data.get("vector")
         if vector:
-            # Only use vector similarity for PostgreSQL with pgvector
-            from django.db import connection
             if connection.vendor == 'postgresql':
                 duplicate = (
                     Person.objects.filter(organization=organization, vector__isnull=False)
@@ -102,6 +106,11 @@ class PersonVectorSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["organization_key"] = getattr(instance.organization, "private_key", None)
+        return data
+
 
 class PersonUpdateSerializer(serializers.ModelSerializer):
     """Сериализатор для обновления Person через PUT запрос."""
@@ -110,6 +119,7 @@ class PersonUpdateSerializer(serializers.ModelSerializer):
         model = Person
         fields = (
             "id",
+            "image",
             "full_name",
             "phone_number",
             "age",
@@ -258,23 +268,44 @@ class CartProductSerializer(serializers.ModelSerializer):
 class CartProductCreateSerializer(serializers.ModelSerializer):
     """Сериализатор для создания CartProduct."""
 
+    organization_key = serializers.CharField(write_only=True)
+
     class Meta:
         model = CartProduct
         fields = (
-            "organization",
+            "organization_key",
             "cart",
             "product"
         )
+        read_only_fields = ()
+
+    def validate(self, attrs):
+        organization_key = attrs.get("organization_key")
+        if not organization_key:
+            raise serializers.ValidationError({"organization_key": "Необходимо указать ключ организации."})
+
+        organization = Organization.objects.filter(private_key=organization_key).first()
+        if not organization:
+            raise serializers.ValidationError({"organization_key": "Организация с указанным ключом не найдена."})
+
+        attrs["organization"] = organization
+        return attrs
+
+    def create(self, validated_data):
+        organization = validated_data.pop("organization")
+        validated_data.pop("organization_key", None)
+        return CartProduct.objects.create(organization=organization, **validated_data)
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["organization_key"] = getattr(instance.organization, "private_key", None)
+        return data
 
 
 class BulkCartProductCreateSerializer(serializers.Serializer):
     """Сериализатор для массового создания CartProduct."""
 
-    cart_products = serializers.ListField(
-        child=CartProductCreateSerializer(),
-        min_length=1,
-        max_length=100
-    )
+    cart_products = CartProductCreateSerializer(many=True, min_length=1, max_length=100)
 
     def validate(self, data):
         """Валидация данных для массового создания."""
@@ -302,7 +333,9 @@ class BulkCartProductCreateSerializer(serializers.Serializer):
         # Создаем объекты CartProduct
         cart_products = []
         for item_data in cart_products_data:
-            cart_product = CartProduct.objects.create(**item_data)
+            organization = item_data.pop("organization")
+            item_data.pop("organization_key", None)
+            cart_product = CartProduct.objects.create(organization=organization, **item_data)
             cart_products.append(cart_product)
 
         return {
@@ -338,17 +371,19 @@ class PersonOrderHistoryResponseSerializer(serializers.Serializer):
 class CartCreateSerializer(serializers.ModelSerializer):
     """Сериализатор для создания корзины."""
 
+    organization_key = serializers.CharField()
+
     class Meta:
         model = Cart
         fields = (
-            "organization",
+            "organization_key",
             "person",
             "table_number"
         )
 
     def validate(self, data):
         """Валидация данных для создания корзины."""
-        organization = data.get('organization')
+        organization = Organization.objects.filter(private_key=data.get('organization_key')).first()
         person = data.get('person')
 
         # Проверяем, что Person принадлежит указанной организации
@@ -359,6 +394,12 @@ class CartCreateSerializer(serializers.ModelSerializer):
                 )
 
         return data
+
+    def create(self, validated_data):
+        organization = Organization.objects.filter(private_key=validated_data['organization_key']).first()
+        validated_data['organization'] = organization
+        validated_data.pop('organization_key')
+        return Cart.objects.create(**validated_data)
 
 
 class CartSerializer(serializers.ModelSerializer):
