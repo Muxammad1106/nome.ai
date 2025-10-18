@@ -22,7 +22,7 @@ from .views import (
 urlpatterns = [
     # Person endpoints
     path("person/", PersonVectorView.as_view(), name="person-vector"),
-    path("persons/", PersonListView.as_view(), name="person-list"),
+    path("persons/list/", PersonListView.as_view(), name="person-list"),
     path("person/<uuid:person_id>/", PersonUpdateView.as_view(), name="person-update"),
     path("person/<uuid:person_id>/detail/", PersonDetailView.as_view(), name="person-detail"),
     path("person/<uuid:person_id>/summary/", PersonSummaryView.as_view(), name="person-summary"),
