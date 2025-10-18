@@ -27,26 +27,26 @@ import type { TooltipProps } from '@/libs/Recharts'
 const AppRecharts = dynamic(() => import('@/libs/styles/AppRecharts'))
 
 // Vars
-const data = [
+const defaultData = [
   {
     subject: 'Normal',
-    'Man': 41,
+    Man: 41
   },
   {
     subject: 'Athletic',
-    'Man': 64,
+    Man: 64
   },
   {
     subject: 'Heavy',
-    'Man': 81,
+    Man: 81
   },
   {
     subject: 'Slim',
-    'Man': 60,
-  },
+    Man: 60
+  }
 ]
 
-const CustomTooltip = (props: TooltipProps<any, any>) => {
+const CustomTooltip = (props: TooltipProps<number, string>) => {
   // Props
   const { active, payload } = props
 
@@ -57,11 +57,12 @@ const CustomTooltip = (props: TooltipProps<any, any>) => {
         <Divider />
         {props &&
           props.payload &&
-          props.payload.map((i: any) => {
+          props.payload.length > 0 &&
+          props.payload.map(i => {
             return (
-              <Box key={i.dataKey} className='flex items-center gap-2.5' sx={{ '& i': { color: i.fill } }}>
+              <Box key={i.dataKey} className='flex items-center gap-2.5' sx={{ '& i': { color: '#fde802' } }}>
                 <i className='tabler-circle-filled text-[10px]' />
-                <Typography variant='body2'>{`${i.dataKey} : ${i.payload[i.dataKey]}`}</Typography>
+                <Typography variant='body2'>{`${i.dataKey} : ${i.payload?.[i.dataKey as string] || ''}`}</Typography>
               </Box>
             )
           })}
@@ -72,7 +73,17 @@ const CustomTooltip = (props: TooltipProps<any, any>) => {
   return null
 }
 
-const RechartsRadarChart = () => {
+interface RechartsRadarChartProps {
+  data?: { type: string; percentage: number }[]
+}
+
+const RechartsRadarChart = ({ data }: RechartsRadarChartProps) => {
+  const chartData = data ? data.map(item => ({ subject: item.type, Man: item.percentage })) : defaultData
+
+  // Generate colors for body types
+  const bodyTypeColors = ['#fde802', '#32baff', '#7367f0', '#ff9f43', '#00d4bd']
+  const chartColor = bodyTypeColors[0] // Use first color for the main data series
+
   return (
     <Card>
       <CardHeader title='Body type segmentation' />
@@ -80,19 +91,19 @@ const RechartsRadarChart = () => {
         <AppRecharts>
           <div className='bs-[350px]'>
             <ResponsiveContainer>
-              <RadarChart cx='50%' cy='50%' height={350} data={data} style={{ direction: 'ltr' }}>
+              <RadarChart cx='50%' cy='50%' height={350} data={chartData} style={{ direction: 'ltr' }}>
                 <PolarGrid />
                 <PolarAngleAxis dataKey='subject' />
                 <PolarRadiusAxis />
                 <Tooltip content={CustomTooltip} />
-                <Radar dataKey='Man' stroke='#fde802' fill='#fde802' fillOpacity={1} />
+                <Radar dataKey='Man' stroke={chartColor} fill={chartColor} fillOpacity={1} />
                 {/* <Radar dataKey='Samsung s20' stroke='#9b88fa' fill='#9b88fa' fillOpacity={0.8} /> */}
               </RadarChart>
             </ResponsiveContainer>
           </div>
         </AppRecharts>
         <div className='flex justify-center gap-6'>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#fde802' } }}>
+          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: chartColor } }}>
             <i className='tabler-circle-filled text-xs' />
             <Typography variant='body2'>Man</Typography>
           </Box>

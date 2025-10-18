@@ -26,12 +26,12 @@ type LabelProp = {
 }
 
 // Vars
-const data = [
+const defaultData = [
   { name: 'Calm', value: 50, color: '#00d4bd' },
   { name: 'Happy', value: 85, color: '#ffe700' },
   { name: 'Neutral', value: 16, color: '#FFA1A1' },
   { name: 'Angry', value: 50, color: '#cd3c3c' },
-  { name: 'Surprised', value: 50, color: '#826bf8' },
+  { name: 'Surprised', value: 50, color: '#826bf8' }
 ]
 
 const RADIAN = Math.PI / 180
@@ -52,7 +52,31 @@ const renderCustomizedLabel = (props: LabelProp) => {
   )
 }
 
-const RechartsPieChart = () => {
+interface RechartsPieChartProps {
+  data?: { type: string; value: number }[]
+}
+
+// Color palette for emotions
+const emotionColors = [
+  '#00d4bd', // Calm - teal
+  '#ffe700', // Happy - yellow
+  '#FFA1A1', // Neutral - light red
+  '#cd3c3c', // Angry - red
+  '#826bf8', // Surprised - purple
+  '#32baff', // Sad - blue
+  '#ff9f43', // Fear - orange
+  '#00c851' // Disgust - green
+]
+
+const RechartsPieChart = ({ data }: RechartsPieChartProps) => {
+  const chartData = data
+    ? data.map((item, index) => ({
+        name: item.type,
+        value: item.value,
+        color: emotionColors[index % emotionColors.length]
+      }))
+    : defaultData
+
   return (
     <Card>
       <CardHeader title='Emotion' />
@@ -62,14 +86,14 @@ const RechartsPieChart = () => {
             <ResponsiveContainer>
               <PieChart height={350} style={{ direction: 'ltr' }}>
                 <Pie
-                  data={data}
+                  data={chartData}
                   innerRadius={80}
                   dataKey='value'
                   label={renderCustomizedLabel}
                   labelLine={false}
                   stroke='none'
                 >
-                  {data.map((entry, index) => (
+                  {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
@@ -79,22 +103,12 @@ const RechartsPieChart = () => {
           </div>
         </AppRecharts>
         <div className='flex justify-center flex-wrap gap-6'>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#00d4bd' } }}>
-            <i className='tabler-circle-filled text-xs' />
-            <Typography variant='body2'>R&D</Typography>
-          </Box>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#ffe700' } }}>
-            <i className='tabler-circle-filled text-xs' />
-            <Typography variant='body2'>Operational</Typography>
-          </Box>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#FFA1A1' } }}>
-            <i className='tabler-circle-filled text-xs' />
-            <Typography variant='body2'>Networking</Typography>
-          </Box>
-          <Box className='flex items-center gap-1.5' sx={{ '& i': { color: '#826bf8' } }}>
-            <i className='tabler-circle-filled text-xs' />
-            <Typography variant='body2'>Hiring</Typography>
-          </Box>
+          {chartData.map((item, index) => (
+            <Box key={index} className='flex items-center gap-1.5' sx={{ '& i': { color: item.color } }}>
+              <i className='tabler-circle-filled text-xs' />
+              <Typography variant='body2'>{item.name}</Typography>
+            </Box>
+          ))}
         </div>
       </CardContent>
     </Card>

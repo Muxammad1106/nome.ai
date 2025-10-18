@@ -72,3 +72,68 @@ export type PersonDetailType = {
   createdAt: string
   updatedAt: string
 }
+
+export type ProductType = {
+  id: string
+  organization: string
+  name: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type CartCreateType = {
+  organization: string
+  person: string
+  tableNumber: number
+}
+
+export type CartProductCreateType = {
+  organization: string
+  cart: string
+  product: string
+}
+
+export type BulkCartProductCreateType = {
+  cartProducts: CartProductCreateType[]
+}
+
+export type AgeStatisticsType = {
+  totalPeople: number
+  data: {
+    type: string
+    percentage: number
+  }[]
+}
+
+export type BodyTypeStatisticsType = {
+  totalPeople: number
+  data: {
+    type: string
+    percentage: number
+  }[]
+}
+
+export type EmotionStatisticsType = {
+  totalPeople: number
+  data: {
+    type: string
+    value: number
+  }[]
+}
+
+export type GenderStatisticsType = {
+  totalPeople: number
+  data: {
+    type: string
+    percentage: number
+  }[]
+}
+
+export type VisitCountStatisticsType = {
+  type: string
+  totalVisits: number
+  data: {
+    date: string
+    value: number
+  }[]
+}

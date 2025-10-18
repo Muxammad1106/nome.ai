@@ -17,7 +17,7 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer
 const AppRecharts = dynamic(() => import('@/libs/styles/AppRecharts'))
 
 // Vars
-const angularData = [
+const defaultAngularData = [
   { x: 5.4, y: 170 },
   { x: 5.4, y: 100 },
   { x: 5.7, y: 110 },
@@ -35,7 +35,7 @@ const angularData = [
   { x: 13.0, y: 230 }
 ]
 
-const vueData = [
+const defaultVueData = [
   { x: 14.0, y: 220 },
   { x: 15.0, y: 280 },
   { x: 16.0, y: 230 },
@@ -65,9 +65,30 @@ const vueData = [
 //   { x: 20.0, y: 120 }
 // ]
 
-const RechartsScatterChart = () => {
+interface RechartsScatterChartProps {
+  data?: { type: string; percentage: number }[]
+}
+
+const RechartsScatterChart = ({ data }: RechartsScatterChartProps) => {
   // Hooks
   const theme = useTheme()
+
+  // Transform age data to scatter plot format
+  const chartData = data
+    ? data.flatMap((item) => {
+        const ageRange = item.type.split('-').map(Number)
+        const midAge = (ageRange[0] + ageRange[1]) / 2
+
+        // Create multiple points for each age group based on percentage
+        const pointCount = Math.max(1, Math.round(item.percentage / 5))
+
+
+return Array.from({ length: pointCount }, () => ({
+          x: midAge + (Math.random() - 0.5) * (ageRange[1] - ageRange[0]),
+          y: Math.random() * 100
+        }))
+      })
+    : defaultAngularData
 
   return (
     <Card>
@@ -102,8 +123,8 @@ const RechartsScatterChart = () => {
                 <CartesianGrid />
                 <XAxis type='number' dataKey='x' reversed={theme.direction === 'rtl'} />
                 <YAxis type='number' dataKey='y' orientation={theme.direction === 'rtl' ? 'right' : 'left'} />
-                <Scatter name='Man' data={angularData} fill='var(--mui-palette-error-main)' />
-                <Scatter name='Woman' data={vueData} fill='var(--mui-palette-success-main)' />
+                <Scatter name='Man' data={chartData} fill='var(--mui-palette-error-main)' />
+                <Scatter name='Woman' data={defaultVueData} fill='var(--mui-palette-success-main)' />
                 {/* <Scatter name='React' data={reactData} fill='var(--mui-palette-primary-main)' /> */}
               </ScatterChart>
             </ResponsiveContainer>
