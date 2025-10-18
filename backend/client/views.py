@@ -51,8 +51,9 @@ class PersonVectorView(APIView):
         serializer = PersonVectorSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         person: Person = serializer.save()
-        person_payload = serializer.data
-        person_payload["vector"] = list(person.vector)
+        person_payload = serializer.data.copy()
+        person_payload.pop("vector")
+
 
         self._notify_person_joined(person, person_payload)
 
