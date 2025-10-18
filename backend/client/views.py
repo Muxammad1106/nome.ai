@@ -52,7 +52,7 @@ class PersonVectorView(APIView):
         serializer.is_valid(raise_exception=True)
         person: Person = serializer.save()
         person_payload = serializer.data
-        person_payload["vector"] = person.vector
+        person_payload["vector"] = list(person.vector)
 
         self._notify_person_joined(person, person_payload)
 
