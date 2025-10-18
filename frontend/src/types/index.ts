@@ -81,21 +81,41 @@ export type ProductType = {
   updatedAt: string
 }
 
-export type CartCreateType = {
-  organization: string
+export type CartCreateRequestType = {
+  organizationKey: string
   person: string
   tableNumber: number
 }
 
-export type CartProductCreateType = {
+export type CartCreateResponseType = {
+  id: string
   organization: string
+  person: string
+  tableNumber: number
+  createdAt: string
+  updatedAt: string
+}
+
+export type CartProductCreateRequestType = {
+  organizationKey: string
   cart: string
   product: string
 }
 
-export type BulkCartProductCreateType = {
-  cartProducts: CartProductCreateType[]
+export type CartProductCreateResponseType = {
+  id: string
+  organization: string
+  cart: string
+  product: string
+  createdAt: string
+  updatedAt: string
 }
+
+export type BulkCartProductCreateRequestType = {
+  cartProducts: CartProductCreateRequestType[]
+}
+
+export type BulkCartProductCreateResponseType = CartProductCreateResponseType[]
 
 export type AgeStatisticsType = {
   totalPeople: number

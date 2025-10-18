@@ -175,7 +175,7 @@ const Footer = ({ mode }: { mode: Mode }) => {
             <span>{`© ${new Date().getFullYear()}, Made with `}</span>
             <span>{`❤️`}</span>
             <span>{` by `}</span>
-            <Link href='/' target='_blank' className='font-medium text-white'>
+            <Link href='/' target='_blank' className='font-medium text-primary'>
               Neighbors team
             </Link>
           </Typography>

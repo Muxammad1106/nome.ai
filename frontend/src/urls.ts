@@ -8,7 +8,7 @@ export const PERSON_AI_SUMMARY = '/client/person/{id}/summary/'
 
 export const CART_CREATE = '/client/cart/'
 export const CART_PRODUCTS_BULK = '/client/cart-products/bulk/'
-export const PRODUCT_LIST = '/client/products/list/'
+export const PRODUCT_LIST = '/client/products/'
 
 export const STATISTICS_AGE = '/client/statistics/age/'
 export const STATISTICS_BODY_TYPE = '/client/statistics/body-type/'

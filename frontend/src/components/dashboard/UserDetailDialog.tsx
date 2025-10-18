@@ -32,6 +32,7 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
 
   const {
     data: personDetail,
+    setData: setPersonDetail,
     loading: personDetailLoading,
     error: personDetailError
   } = usePersonDetailWithCarts(person.id, open)
@@ -45,9 +46,32 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
     setEditDialogOpen(false)
   }
 
-  const handleTableBindingSuccess = () => {
-    // Refresh the person detail data
-    window.location.reload()
+  const handleTableBindingSuccess = (newOrderData: { tableNumber: number; products: any[] }) => {
+    if (personDetail) {
+      // Create new cart object
+      const newCart = {
+        id: `temp-${Date.now()}`, // Temporary ID for new cart
+        tableNumber: newOrderData.tableNumber,
+        cartProducts: newOrderData.products.map((product: any) => ({
+          id: `temp-${Date.now()}-${product.id}`,
+          productId: product.id,
+          productName: product.name,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        })),
+        totalProducts: newOrderData.products.length.toString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+
+      // Update personDetail with new cart
+      setPersonDetail({
+        ...personDetail,
+        carts: [newCart, ...personDetail.carts],
+        totalCarts: (parseInt(personDetail.totalCarts) + 1).toString(),
+        totalProductsInCarts: (parseInt(personDetail.totalProductsInCarts) + newOrderData.products.length).toString()
+      })
+    }
   }
 
   return (

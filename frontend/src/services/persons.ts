@@ -1,4 +1,4 @@
-import useRequest from '@hooks/useRequest'
+import useRequest from '../hooks/useRequest'
 
 import {
   PERSON_DETAIL,
@@ -8,7 +8,7 @@ import {
   CART_CREATE,
   CART_PRODUCTS_BULK,
   PRODUCT_LIST
-} from '@/urls'
+} from '../urls'
 
 import type {
   Pagination,
@@ -16,7 +16,9 @@ import type {
   PersonAISummaryType,
   PersonDetailType,
   ProductType,
-} from '@/types'
+  CartCreateResponseType,
+  BulkCartProductCreateResponseType
+} from '../types'
 
 export const usePersonActionList = () => {
   return useRequest<Pagination<PersonType>>({ url: PERSON_LIST, params: { page_size: 100 } })
@@ -34,20 +36,20 @@ export const usePersonDetailWithCarts = (id: string, enabled = true) => {
   return useRequest<PersonDetailType>({ url: PERSON_DETAIL_WITH_CARTS.replace('{id}', id) }, { immediate: enabled })
 }
 
-export const useProductList = (organizationId: string, enabled = true) => {
+export const useProductList = (enabled = true) => {
   return useRequest<Pagination<ProductType>>(
     {
       url: PRODUCT_LIST,
-      params: { organization: organizationId, page_size: 100 }
+      params: { page_size: 100 }
     },
     { immediate: enabled }
   )
 }
 
 export const useCartCreate = () => {
-  return useRequest<{ id: string }>({ method: 'POST', url: CART_CREATE })
+  return useRequest<CartCreateResponseType>({ method: 'POST', url: CART_CREATE })
 }
 
 export const useBulkCartProductCreate = () => {
-  return useRequest<{ created_count: number; cart_products: any[] }>({ method: 'POST', url: CART_PRODUCTS_BULK })
+  return useRequest<BulkCartProductCreateResponseType>({ method: 'POST', url: CART_PRODUCTS_BULK })
 }

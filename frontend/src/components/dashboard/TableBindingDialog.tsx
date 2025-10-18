@@ -19,16 +19,18 @@ import StepLabel from '@mui/material/StepLabel'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 
-import CustomTextField from '@core/components/mui/TextField'
-import DialogCloseButton from '@components/dialogs/DialogCloseButton'
+import CustomTextField from '../../@core/components/mui/TextField'
+import DialogCloseButton from '../dialogs/DialogCloseButton'
+
 import type { PersonType, ProductType } from '@/types'
-import { useProductList, useCartCreate, useBulkCartProductCreate } from '@/services/persons'
+import { useProductList, useCartCreate, useBulkCartProductCreate } from '../../services/persons'
+import { ORGANIZATION_KEY } from '../../utils/organization'
 
 type TableBindingDialogProps = {
   open: boolean
   setOpen: (open: boolean) => void
   person: PersonType
-  onSuccess?: () => void
+  onSuccess?: (orderData: { tableNumber: number; products: ProductType[] }) => void
 }
 
 const TableBindingDialog = ({ open, setOpen, person, onSuccess }: TableBindingDialogProps) => {
@@ -37,10 +39,7 @@ const TableBindingDialog = ({ open, setOpen, person, onSuccess }: TableBindingDi
   const [selectedProducts, setSelectedProducts] = useState<string[]>([])
   const [createdCartId, setCreatedCartId] = useState<string | null>(null)
 
-  // Static organization ID as mentioned in requirements
-  const organizationId = '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-
-  const { data: productsData, loading: productsLoading, error: productsError } = useProductList(organizationId, open)
+  const { data: productsData, loading: productsLoading, error: productsError } = useProductList(open)
   const { mutate: createCart, loading: cartLoading } = useCartCreate()
   const { mutate: createCartProducts, loading: cartProductsLoading } = useBulkCartProductCreate()
 
@@ -66,7 +65,7 @@ const TableBindingDialog = ({ open, setOpen, person, onSuccess }: TableBindingDi
       try {
         const cartResponse = await createCart({
           data: {
-            organization: organizationId,
+            organizationKey: ORGANIZATION_KEY,
             person: person.id,
             tableNumber: Number(tableNumber)
           }
@@ -90,18 +89,20 @@ const TableBindingDialog = ({ open, setOpen, person, onSuccess }: TableBindingDi
 
       try {
         const cartProducts = selectedProducts.map(productId => ({
-          organization: organizationId,
+          organizationKey: ORGANIZATION_KEY || '',
           cart: createdCartId!,
           product: productId
         }))
 
-        await createCartProducts({
-          data: {
-            cartProducts
-          }
-        })
+        await createCartProducts({ data: { cartProducts } })
 
-        onSuccess?.()
+        const selectedProductsData =
+          productsData?.results?.filter((product: ProductType) => selectedProducts.includes(product.id)) || []
+
+        onSuccess?.({
+          tableNumber: Number(tableNumber),
+          products: selectedProductsData
+        })
         handleClose()
       } catch (error) {
         console.error('Error adding products to cart:', error)

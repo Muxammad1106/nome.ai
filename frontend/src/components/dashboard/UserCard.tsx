@@ -27,7 +27,7 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
 
   return (
     <Card>
-      <CardContent className='flex flex-col gap-4'>
+      <CardContent className='flex flex-col gap-4 p-3'>
         <div
           className='flex justify-center items-center pli-2.5 pbs-4 rounded border relative cursor-pointer w-full h-full'
           onClick={toggleDetailDialog}
@@ -38,19 +38,17 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
           />
 
           {firstTime ? (
-            <Chip className='absolute top-1 right-1' variant='filled' label='New' size='small' color='primary' />
+            <Chip className='absolute top-1 left-1' variant='filled' label='New' size='small' color='primary' />
           ) : null}
         </div>
         <div>
           {firstTime ? (
             <div className='flex justify-between gap-1'>
               <div className='flex-1'>
-                <Typography variant='h5' className='mbe-2 text-gray-500'>
+                <Typography variant='h5' className='text-gray-500'>
                   {person.fullName || 'No name provided'}
                 </Typography>
-                <Typography variant='body2' className='text-gray-500'>
-                  {person.bodyType}
-                </Typography>
+                <Typography variant='body2'>{person.age} y.o.</Typography>
               </div>
 
               <OpenDialogOnElementClick
@@ -67,10 +65,10 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
             </div>
           ) : (
             <>
-              <Typography variant='h5' className='mbe-2'>
+              <Typography variant='h5'>
                 {person.fullName}
               </Typography>
-              <Typography variant='body2'>{person.bodyType}</Typography>
+              <Typography variant='body2'>{person.age} y.o.</Typography>
             </>
           )}
         </div>

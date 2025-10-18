@@ -55,9 +55,7 @@ export default function UserDetailLeftSide({ person, openEditModal }: Props) {
                       ? BACKEND_API + person.image
                       : 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Image.png'
                   }
-                  width={120}
-                  height={120}
-                  className='border-2 border-primary/20 object-contain p-1 rounded-full'
+                  className='bs-[146px] w-full object-contain'
                 />
               </Box>
 
