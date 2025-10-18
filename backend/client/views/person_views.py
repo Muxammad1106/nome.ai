@@ -12,9 +12,6 @@ from django.db.models import Count, Q
 from django.utils import timezone
 from datetime import datetime, timedelta
 from collections import Counter
-import openai
-import os
-from django.conf import settings
 
 from ..models import Person, CartProduct, Cart, Product
 from ..serializers import (
@@ -25,7 +22,7 @@ from ..serializers import (
     PersonSummarySerializer,
     PersonOrderHistoryResponseSerializer,
 )
-from ..utils import get_age_category
+from ..utils import get_age_category, _generate_ai_summary
 
 
 @extend_schema(
@@ -210,42 +207,68 @@ class PersonSummaryView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # Собираем данные о посещениях
+        # Получаем полную историю заказов как JSON
         carts = person.carts.all().order_by('-created_at')
         total_visits = carts.count()
         last_visit = carts.first().created_at if carts.exists() else None
 
-        # Анализируем любимые столы
-        table_counts = Counter()
-        for cart in carts:
-            if cart.table_number:
-                table_counts[cart.table_number] += 1
-        favorite_table = table_counts.most_common(1)[0][0] if table_counts else None
+        # Собираем полную историю заказов в формате JSON
+        order_history_data = {
+            "person_id": str(person.id),
+            "person_name": person.full_name or "Unknown",
+            "total_orders": total_visits,
+            "orders": []
+        }
 
-        # Анализируем любимые блюда
+        # Анализируем любимые столы и блюда
+        table_counts = Counter()
         dish_counts = Counter()
         total_items = 0
+
         for cart in carts:
             cart_products = cart.cartproduct_set.select_related('product')
+
+            # Собираем данные о столе
+            if cart.table_number:
+                table_counts[cart.table_number] += 1
+
+            # Собираем продукты в заказе
+            products_in_cart = []
             for cart_product in cart_products:
                 dish_name = cart_product.product.name
                 dish_counts[dish_name] += 1
                 total_items += 1
 
+                products_in_cart.append({
+                    "product_id": str(cart_product.product.id),
+                    "product_name": cart_product.product.name,
+                    "added_at": cart_product.created_at.isoformat()
+                })
+
+            # Добавляем заказ в историю
+            order_history_data["orders"].append({
+                "cart_id": str(cart.id),
+                "cart_created_at": cart.created_at.isoformat(),
+                "cart_updated_at": cart.updated_at.isoformat(),
+                "table_number": cart.table_number,
+                "products": products_in_cart,
+                "total_products": len(products_in_cart)
+            })
+
+        # Определяем любимые блюда и стол
+        favorite_table = table_counts.most_common(1)[0][0] if table_counts else None
         favorite_dishes = [
-            {"dish": dish, "count": count} 
+            {"dish": dish, "count": count}
             for dish, count in dish_counts.most_common(5)
         ]
 
-        # Генерируем ИИ-сводку
-        ai_summary = self._generate_ai_summary(
-            person, total_visits, favorite_table, favorite_dishes, total_items
-        )
+        # Генерируем ИИ-сводку с полной историей заказов
+        ai_summary = _generate_ai_summary(person, order_history_data)
 
         # Формируем ответ
         summary_data = {
             "person_id": str(person.id),
-            "person_name": person.full_name or "Неизвестно",
+            "person_name": person.full_name or "Unknown",
             "total_visits": total_visits,
             "favorite_table": favorite_table,
             "favorite_dishes": favorite_dishes,
@@ -257,51 +280,6 @@ class PersonSummaryView(APIView):
         serializer = PersonSummarySerializer(summary_data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def _generate_ai_summary(self, person, total_visits, favorite_table, favorite_dishes, total_items):
-        """Генерирует ИИ-сводку с помощью OpenAI."""
-        try:
-            # Получаем API ключ из переменных окружения
-            api_key = os.getenv('OPENAI_API_KEY')
-            if not api_key:
-                return "ИИ-анализ недоступен: не настроен OPENAI_API_KEY"
-
-            # Настраиваем клиент OpenAI
-            client = openai.OpenAI(api_key=api_key)
-
-            # Формируем промпт
-            prompt = f"""
-            Проанализируй данные о клиенте ресторана и создай краткую персонализированную сводку:
-
-            Клиент: {person.full_name or 'Неизвестно'}
-            Возраст: {person.age or 'Не указан'}
-            Пол: {person.gender or 'Не указан'}
-            Эмоции: {person.emotion or 'Не указаны'}
-            Тип телосложения: {person.body_type or 'Не указан'}
-
-            Статистика посещений:
-            - Всего визитов: {total_visits}
-            - Любимый стол: {favorite_table or 'Не определен'}
-            - Любимые блюда: {', '.join([dish['dish'] for dish in favorite_dishes[:3]]) if favorite_dishes else 'Не определены'}
-            - Всего заказанных блюд: {total_items}
-
-            Создай краткую (2-3 предложения) персонализированную сводку на русском языке,
-            которая поможет персоналу лучше обслужить этого клиента.
-            """
-
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "Ты - помощник ресторана, который анализирует данные о клиентах."},
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=200,
-                temperature=0.7
-            )
-
-            return response.choices[0].message.content.strip()
-
-        except Exception as e:
-            return f"Ошибка при генерации ИИ-сводки: {str(e)}"
 
 
 @extend_schema(

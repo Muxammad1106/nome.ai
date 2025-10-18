@@ -22,11 +22,11 @@ from .views import (
 urlpatterns = [
     # Person endpoints
     path("person/", PersonVectorView.as_view(), name="person-vector"),
+    path("persons/", PersonListView.as_view(), name="person-list"),
     path("person/<uuid:person_id>/", PersonUpdateView.as_view(), name="person-update"),
     path("person/<uuid:person_id>/detail/", PersonDetailView.as_view(), name="person-detail"),
     path("person/<uuid:person_id>/summary/", PersonSummaryView.as_view(), name="person-summary"),
     path("person/<uuid:person_id>/orders/", PersonOrderHistoryView.as_view(), name="person-order-history"),
-    path("persons/", PersonListView.as_view(), name="person-list"),
 
     # Cart endpoints
     path("cart-products/bulk/", BulkCartProductCreateView.as_view(), name="bulk-cart-product-create"),

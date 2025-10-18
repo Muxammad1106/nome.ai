@@ -24,7 +24,7 @@ Content-Type: application/json
 **Response:**
 ```json
 {
-  "message": "Успешный вход в систему",
+  "message": "Login successful",
   "user": {
     "id": "uuid",
     "email": "user@example.com",
@@ -146,6 +146,92 @@ GET /api/client/person/{person_id}/orders/
   ]
 }
 ```
+
+### Get Person Details
+```http
+GET /api/client/person/{person_id}/detail/
+```
+
+**Description:**
+Returns detailed person information including all carts and products.
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "full_name": "John Doe",
+  "phone_number": "+998901234567",
+  "age": 30,
+  "gender": "Male",
+  "emotion": "Happy",
+  "body_type": "Athletic",
+  "entry_time": "2024-12-01T10:00:00Z",
+  "exit_time": "2024-12-01T11:00:00Z",
+  "created_at": "2024-12-01T09:00:00Z",
+  "updated_at": "2024-12-01T10:00:00Z",
+  "carts": [
+    {
+      "id": "uuid",
+      "table_number": 5,
+      "created_at": "2024-12-01T10:00:00Z",
+      "updated_at": "2024-12-01T10:30:00Z",
+      "products": [
+        {
+          "id": "uuid",
+          "name": "Pizza Margherita",
+          "created_at": "2024-12-01T10:05:00Z"
+        },
+        {
+          "id": "uuid",
+          "name": "Coca-Cola",
+          "created_at": "2024-12-01T10:10:00Z"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Get Person Summary with AI Analysis
+```http
+GET /api/client/person/{person_id}/summary/
+```
+
+**Description:**
+Returns a comprehensive person summary with preference analysis and AI-generated insights.
+
+**Response:**
+```json
+{
+  "person_id": "uuid",
+  "person_name": "John Doe",
+  "total_visits": 15,
+  "favorite_table": 5,
+  "favorite_dishes": [
+    {
+      "dish": "Pizza Margherita",
+      "count": 8
+    },
+    {
+      "dish": "Caesar Salad",
+      "count": 6
+    },
+    {
+      "dish": "Coca-Cola",
+      "count": 12
+    }
+  ],
+  "ai_summary": "John Doe is a regular customer who visits frequently and prefers table 5. His favorite dish is Pizza Margherita, which he has ordered 8 times. He typically orders beverages with his meals, particularly Coca-Cola. His dining patterns suggest a preference for Italian cuisine and casual dining experiences.",
+  "last_visit": "2024-12-15T19:30:00Z",
+  "total_spent_items": 45
+}
+```
+
+**Features:**
+- Automatic customer preference analysis
+- AI-generated personalized summary
+- Statistics on favorite dishes and tables
+- Visit history and total order volume
 
 ## Statistics & Analytics
 
@@ -285,7 +371,7 @@ Content-Type: application/json
 **Response:**
 ```json
 {
-  "message": "Успешно создано 2 товаров в корзинах",
+  "message": "Successfully created 2 cart products",
   "created_count": 2,
   "cart_products": [
     {
@@ -315,7 +401,7 @@ Content-Type: application/json
 ### 404 Not Found
 ```json
 {
-  "error": "Person не найден"
+  "error": "Person not found"
 }
 ```
 
@@ -421,6 +507,7 @@ interface CartProduct {
 ### Python
 ```python
 import requests
+import json
 
 # Login
 session = requests.Session()
@@ -439,6 +526,22 @@ person_data = {
 }
 response = session.post('https://nome-ai-t5lly.ondigitalocean.app/api/client/person/', 
                        data=person_data)
+
+# Get person summary with AI analysis
+person_id = response.json()['id']
+summary = session.get(f'https://nome-ai-t5lly.ondigitalocean.app/api/client/person/{person_id}/summary/')
+summary_data = summary.json()
+print(f"AI Summary: {summary_data['ai_summary']}")
+print(f"Favorite table: {summary_data['favorite_table']}")
+print(f"Favorite dishes: {summary_data['favorite_dishes']}")
+
+# Get person details
+details = session.get(f'https://nome-ai-t5lly.ondigitalocean.app/api/client/person/{person_id}/detail/')
+details_data = details.json()
+for cart in details_data['carts']:
+    print(f"Cart {cart['id']} at table {cart['table_number']}:")
+    for product in cart['products']:
+        print(f"  - {product['name']}")
 ```
 
 ### JavaScript
@@ -458,6 +561,17 @@ const response = await fetch('/api/auth/login/', {
 // Get statistics
 const stats = await fetch('/api/client/statistics/visit-count/?type=week');
 const data = await stats.json();
+
+// Get person summary with AI analysis
+const summary = await fetch('/api/client/person/uuid/summary/');
+const summaryData = await summary.json();
+console.log(summaryData.ai_summary);  // AI-generated insights
+console.log(summaryData.favorite_dishes);  // Top dishes
+
+// Get person details with carts
+const details = await fetch('/api/client/person/uuid/detail/');
+const detailsData = await details.json();
+console.log(detailsData.carts);  // All carts with products
 ```
 
 ## Webhook Integration

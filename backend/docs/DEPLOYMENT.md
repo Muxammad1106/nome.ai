@@ -19,10 +19,11 @@ This guide covers the complete deployment process for the Nome.ai backend API, i
 ### System Requirements
 - **Operating System**: Ubuntu 20.04+ or similar Linux distribution
 - **Python**: 3.9 or higher
-- **PostgreSQL**: 12 or higher
+- **PostgreSQL**: 12 or higher with pgvector extension
 - **Redis**: 6.0 or higher (for WebSocket channels)
 - **Memory**: Minimum 2GB RAM
 - **Storage**: Minimum 20GB available space
+- **AI API Key**: Required for AI-powered customer insights feature
 
 ### Software Dependencies
 - Docker (optional, for containerized deployment)
@@ -90,6 +91,9 @@ DATABASE_URL=postgresql://nomeai:password@localhost:5432/nomeai_prod
 
 # Redis Configuration
 REDIS_URL=redis://localhost:6379/0
+
+# AI Configuration (Required for AI features)
+OPENAI_API_KEY=your-ai-api-key-here
 
 # Media and Static Files
 MEDIA_ROOT=/home/nomeai/apps/nome-ai-backend/backend/media
@@ -491,16 +495,45 @@ sudo supervisorctl restart nomeai-backend
 - Check application logs for errors
 - Monitor system resources
 - Verify backup completion
+- Monitor AI API usage
 
 #### Weekly
 - Review security logs
 - Update system packages
 - Clean old log files
+- Review AI-generated insights quality
 
 #### Monthly
 - Review performance metrics
 - Update application dependencies
 - Test disaster recovery procedures
+- Review and optimize AI prompts
+
+## AI Features Configuration
+
+### AI Integration
+
+The system uses AI to generate personalized customer insights.
+
+#### Configuration
+1. Obtain your AI API key from the service provider
+2. Add the key to `.env` file: `OPENAI_API_KEY=your-key-here`
+3. Restart the application to apply changes
+
+#### Monitoring Usage
+```bash
+# Check AI generation logs
+tail -f /home/nomeai/apps/nome-ai-backend/backend/logs/django.log | grep "AI summary"
+
+# Monitor AI errors
+tail -f /home/nomeai/apps/nome-ai-backend/backend/logs/django.log | grep "Error generating AI"
+```
+
+#### Fallback Behavior
+If the AI API key is not configured:
+- The `/api/client/person/{id}/summary/` endpoint will return:
+  `"AI analysis unavailable: OPENAI_API_KEY not configured"`
+- Other data (favorite dishes, tables, statistics) will work normally
 
 ## Support
 
