@@ -17,11 +17,8 @@ const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexChart
 
 // Vars
 const radialBarColors = {
-  series1: '#fdd835',
   series2: '#32baff',
-  series3: '#00d4bd',
   series4: '#7367f0',
-  series5: '#FFA1A1'
 }
 
 const ApexRadialBarChart = () => {
@@ -33,7 +30,7 @@ const ApexRadialBarChart = () => {
 
   const options: ApexOptions = {
     stroke: { lineCap: 'round' },
-    labels: ['Comments', 'Replies', 'Shares'],
+    labels: ['Man', 'Woman'],
     legend: {
       show: true,
       fontSize: '13px',
@@ -48,7 +45,7 @@ const ApexRadialBarChart = () => {
         horizontal: 9
       }
     },
-    colors: [radialBarColors.series1, radialBarColors.series2, radialBarColors.series4],
+    colors: [radialBarColors.series2, radialBarColors.series4],
     plotOptions: {
       radialBar: {
         hollow: { size: '30%' },
@@ -97,9 +94,9 @@ const ApexRadialBarChart = () => {
 
   return (
     <Card>
-      <CardHeader title='Statistics' />
+      <CardHeader title='Gender' />
       <CardContent>
-        <AppReactApexCharts type='radialBar' width='100%' height={400} options={options} series={[80, 50, 35]} />
+        <AppReactApexCharts type='radialBar' width='100%' height={400} options={options} series={[57,43]} />
       </CardContent>
     </Card>
   )

@@ -24,25 +24,14 @@ type EditUserInfoProps = {
   person: PersonType
 }
 
-const initialData: EditPersonDataType = {
-  id: '13721752-5533-4969-4bc36-e4933f8e6d7e',
-  image: '/media/people/213123_TAjF1Q9.jpg',
-  age: 31,
-  gender: 'Male',
-  emotion: '\u0421\u0447\u0430\u0441\u0442\u043b\u0438\u0432\u044b\u0439',
-  bodyType: 'Normal',
-  entryTime: '2025-10-17T23:48:27Z',
-  exitTime: '2025-10-17T23:48:27Z'
-}
-
-const UserEditDialog = ({ open, setOpen,onSuccess, person }: EditUserInfoProps) => {
-  const [userData, setUserData] = useState<EditPersonDataType>(person || initialData)
+const UserEditDialog = ({ open, setOpen, onSuccess, person }: EditUserInfoProps) => {
+  const [userData, setUserData] = useState<EditPersonDataType>({})
 
   const { mutate, loading } = usePersonUpdate(person.id)
 
   const handleClose = () => {
     setOpen(false)
-    setUserData(person || initialData)
+    setUserData({})
   }
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
@@ -85,6 +74,7 @@ const UserEditDialog = ({ open, setOpen,onSuccess, person }: EditUserInfoProps) 
                 fullWidth
                 label='Full Name'
                 placeholder='Enter name of customer'
+                defaultValue={person.fullName}
                 value={userData?.fullName}
                 onChange={e => setUserData({ ...userData, fullName: e.target.value })}
               />
@@ -95,6 +85,7 @@ const UserEditDialog = ({ open, setOpen,onSuccess, person }: EditUserInfoProps) 
                 fullWidth
                 label='Phone number'
                 placeholder='+998 ** *** ** **'
+                defaultValue={person.phoneNumber}
                 value={userData?.phoneNumber}
                 onChange={e => setUserData({ ...userData, phoneNumber: e.target.value })}
               />
@@ -106,6 +97,7 @@ const UserEditDialog = ({ open, setOpen,onSuccess, person }: EditUserInfoProps) 
           <Button variant='contained' type='submit'>
             Submit
           </Button>
+
           <Button variant='tonal' color='secondary' type='reset' onClick={handleClose}>
             Cancel
           </Button>

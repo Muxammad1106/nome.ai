@@ -130,24 +130,27 @@ const Login = ({ mode }: { mode: SystemMode }) => {
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
 
   const onSubmit: SubmitHandler<FormData> = async (data: FormData) => {
-    const res = await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      redirect: false
-    })
+    console.log(data)
 
-    if (res && res.ok && res.error === null) {
-      // Vars
-      const redirectURL = searchParams.get('redirectTo') ?? '/'
+    // const res = await signIn('credentials', {
+    //   email: data.email,
+    //   password: data.password,
+    //   redirect: false
+    // })
 
-      router.replace(getLocalizedUrl(redirectURL, locale as Locale))
-    } else {
-      if (res?.error) {
-        const error = JSON.parse(res.error)
+    // if (res && res.ok && res.error === null) {
+    // Vars
+    const redirectURL = searchParams.get('redirectTo') ?? '/'
 
-        setErrorState(error)
-      }
-    }
+    router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+
+    // } else {
+    //   if (res?.error) {
+    //     const error = JSON.parse(res.error)
+
+    //     setErrorState(error)
+    //   }
+    // }
   }
 
   return (

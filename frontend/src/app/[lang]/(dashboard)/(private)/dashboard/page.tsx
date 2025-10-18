@@ -34,7 +34,7 @@ export default function Dashboard() {
     [setPersonList]
   )
 
-  const { isConnected, error } = useWebSocketPersonEvents({ onMessage: handleMessage })
+  const { isConnected } = useWebSocketPersonEvents({ onMessage: handleMessage })
 
   const handlePersonUpdate = useCallback(
     (updatedPerson: PersonType) => {
@@ -57,12 +57,6 @@ export default function Dashboard() {
           <div className='flex items-center justify-center gap-2 py-8'>
             <CircularProgress />
             <Typography>Loading...</Typography>
-          </div>
-        </Grid>
-      ) : error ? (
-        <Grid item xs={12}>
-          <div className='text-center py-8'>
-            <p className='text-red-500'>Error: {error}</p>
           </div>
         </Grid>
       ) : personList?.count === 0 ? (

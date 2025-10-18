@@ -51,19 +51,19 @@ const vueData = [
   { x: 18.0, y: 120 }
 ]
 
-const reactData = [
-  { x: 14.0, y: 290 },
-  { x: 13.0, y: 190 },
-  { x: 20.0, y: 220 },
-  { x: 21.0, y: 350 },
-  { x: 21.5, y: 290 },
-  { x: 22.0, y: 220 },
-  { x: 23.0, y: 140 },
-  { x: 19.0, y: 400 },
-  { x: 20.0, y: 200 },
-  { x: 22.0, y: 90 },
-  { x: 20.0, y: 120 }
-]
+// const reactData = [
+//   { x: 14.0, y: 290 },
+//   { x: 13.0, y: 190 },
+//   { x: 20.0, y: 220 },
+//   { x: 21.0, y: 350 },
+//   { x: 21.5, y: 290 },
+//   { x: 22.0, y: 220 },
+//   { x: 23.0, y: 140 },
+//   { x: 19.0, y: 400 },
+//   { x: 20.0, y: 200 },
+//   { x: 22.0, y: 90 },
+//   { x: 20.0, y: 120 }
+// ]
 
 const RechartsScatterChart = () => {
   // Hooks
@@ -72,7 +72,7 @@ const RechartsScatterChart = () => {
   return (
     <Card>
       <CardHeader
-        title='Framework Usage'
+        title='Age'
         sx={{
           flexDirection: ['column', 'row'],
           alignItems: ['flex-start', 'center'],
@@ -82,17 +82,17 @@ const RechartsScatterChart = () => {
       />
       <CardContent>
         <div className='flex mbe-4 gap-6'>
-          <div className='flex items-center gap-1.5'>
+          {/* <div className='flex items-center gap-1.5'>
             <i className='tabler-circle-filled text-xs text-primary' />
-            <Typography variant='body2'>React</Typography>
-          </div>
+            <Typography variant='body2'>Man</Typography>
+          </div> */}
           <div className='flex items-center gap-1.5'>
             <i className='tabler-circle-filled text-xs text-success' />
-            <Typography variant='body2'>Vue</Typography>
+            <Typography variant='body2'>Man</Typography>
           </div>
           <div className='flex items-center gap-1.5'>
             <i className='tabler-circle-filled text-xs text-error' />
-            <Typography variant='body2'>Angular</Typography>
+            <Typography variant='body2'>Woman</Typography>
           </div>
         </div>
         <AppRecharts>
@@ -102,9 +102,9 @@ const RechartsScatterChart = () => {
                 <CartesianGrid />
                 <XAxis type='number' dataKey='x' reversed={theme.direction === 'rtl'} />
                 <YAxis type='number' dataKey='y' orientation={theme.direction === 'rtl' ? 'right' : 'left'} />
-                <Scatter name='Angular' data={angularData} fill='var(--mui-palette-error-main)' />
-                <Scatter name='Vue' data={vueData} fill='var(--mui-palette-success-main)' />
-                <Scatter name='React' data={reactData} fill='var(--mui-palette-primary-main)' />
+                <Scatter name='Man' data={angularData} fill='var(--mui-palette-error-main)' />
+                <Scatter name='Woman' data={vueData} fill='var(--mui-palette-success-main)' />
+                {/* <Scatter name='React' data={reactData} fill='var(--mui-palette-primary-main)' /> */}
               </ScatterChart>
             </ResponsiveContainer>
           </div>

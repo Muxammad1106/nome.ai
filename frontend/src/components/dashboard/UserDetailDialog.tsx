@@ -12,12 +12,15 @@ import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
+import Skeleton from '@mui/material/Skeleton'
 
 import DialogCloseButton from '@components/dialogs/DialogCloseButton'
 import CustomTextField from '@core/components/mui/TextField'
+
 import UserEditDialog from '@/components/dashboard/UserEditDialog'
 import type { PersonType } from '@/types'
 import { BACKEND_API } from '@/utils/request'
+import { usePersonAISummary, usePersonDetailWithCarts } from '@/services/persons'
 
 type UserDetailDialogProps = {
   open: boolean
@@ -28,6 +31,13 @@ type UserDetailDialogProps = {
 
 const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailDialogProps) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const { data: summary, loading: summaryLoading, error: summaryError } = usePersonAISummary(person.id, open)
+
+  const {
+    data: personDetail,
+    loading: personDetailLoading,
+    error: personDetailError
+  } = usePersonDetailWithCarts(person.id, open)
 
   const handleClose = () => {
     setOpen(false)
@@ -69,6 +79,60 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
     return 'default'
   }
 
+  const AISummarySkeleton = () => (
+    <Box>
+      {/* AI Summary Skeleton */}
+      <Box className='mbe-4'>
+        <Skeleton variant='text' width={120} height={24} className='mbe-2' />
+        <Skeleton variant='rectangular' height={80} className='rounded' />
+      </Box>
+
+      {/* Visit Statistics Skeleton */}
+      <Grid container spacing={2} className='mbe-4'>
+        <Grid item xs={6}>
+          <Box className='text-center p-2 bg-grey-50 rounded'>
+            <Skeleton variant='text' width={40} height={32} className='mx-auto mbe-1' />
+            <Skeleton variant='text' width={80} height={16} className='mx-auto' />
+          </Box>
+        </Grid>
+        <Grid item xs={6}>
+          <Box className='text-center p-2 bg-grey-50 rounded'>
+            <Skeleton variant='text' width={40} height={32} className='mx-auto mbe-1' />
+            <Skeleton variant='text' width={100} height={16} className='mx-auto' />
+          </Box>
+        </Grid>
+      </Grid>
+
+      {/* Favorite Table Skeleton */}
+      <Box className='mbe-4'>
+        <Skeleton variant='text' width={100} height={20} className='mbe-1' />
+        <Skeleton variant='rectangular' width={80} height={24} className='rounded-full' />
+      </Box>
+
+      {/* Favorite Dishes Skeleton */}
+      <Box className='mbe-4'>
+        <Skeleton variant='text' width={100} height={20} className='mbe-2' />
+        <Box className='flex flex-wrap gap-1'>
+          <Skeleton variant='rectangular' width={60} height={24} className='rounded-full' />
+          <Skeleton variant='rectangular' width={80} height={24} className='rounded-full' />
+          <Skeleton variant='rectangular' width={70} height={24} className='rounded-full' />
+        </Box>
+      </Box>
+
+      {/* Last Visit Skeleton */}
+      <Box>
+        <Skeleton variant='text' width={80} height={20} className='mbe-1' />
+        <Skeleton variant='text' width={150} height={16} />
+      </Box>
+    </Box>
+  )
+
+  const OrderHistorySkeleton = () => (
+    <Box>
+      <Skeleton variant='rectangular' height={200} className='rounded' />
+    </Box>
+  )
+
   return (
     <>
       <Dialog
@@ -101,7 +165,11 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
                     <CardContent className='text-center relative'>
                       <Box className='flex justify-center mbe-3'>
                         <img
-                          src={person.image ? BACKEND_API + person.image : '/images/illustrations/characters/4.png'}
+                          src={
+                            person.image
+                              ? BACKEND_API + person.image
+                              : 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Image.png'
+                          }
                           width={120}
                           height={120}
                           className='border-2 border-primary/20 object-contain p-1 rounded-full'
@@ -292,13 +360,101 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
                     <CardContent>
                       <Typography variant='h6' className='flex items-center gap-2 mbe-3'>
                         <i className='tabler-brain' />
-                        AI Suggestions
+                        AI Summary & Insights
                       </Typography>
-                      <Box className='text-center py-8'>
-                        <Typography variant='body1'>
-                          AI-powered recommendations will appear here
-                        </Typography>
-                      </Box>
+
+                      {summaryLoading ? (
+                        <AISummarySkeleton />
+                      ) : summaryError ? (
+                        <Box className='text-center py-8'>
+                          <Typography variant='body1' color='error'>
+                            Failed to load AI insights
+                          </Typography>
+                        </Box>
+                      ) : summary ? (
+                        <Box>
+                          {/* AI Summary */}
+                          <Box className='mbe-4'>
+                            <Typography variant='subtitle2' className='mbe-2'>
+                              AI Summary
+                            </Typography>
+                            <Typography variant='body2' className='p-3 bg-grey-50 rounded border'>
+                              {summary.aiSummary}
+                            </Typography>
+                          </Box>
+
+                          {/* Visit Statistics */}
+                          <Grid container spacing={2} className='mbe-4'>
+                            <Grid item xs={6}>
+                              <Box className='text-center p-2 bg-primary/5 rounded'>
+                                <Typography variant='h6' color='primary'>
+                                  {summary.totalVisits}
+                                </Typography>
+                                <Typography variant='caption'>Total Visits</Typography>
+                              </Box>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Box className='text-center p-2 bg-success/5 rounded'>
+                                <Typography variant='h6' color='success.main'>
+                                  {summary.totalSpentItems}
+                                </Typography>
+                                <Typography variant='caption'>Items Purchased</Typography>
+                              </Box>
+                            </Grid>
+                          </Grid>
+
+                          {/* Favorite Table */}
+                          {summary.favoriteTable && summary.favoriteTable > 0 && (
+                            <Box className='mbe-4'>
+                              <Typography variant='subtitle2' className='mbe-1'>
+                                Favorite Table
+                              </Typography>
+                              <Chip
+                                label={`Table ${summary.favoriteTable}`}
+                                color='primary'
+                                variant='outlined'
+                                size='small'
+                              />
+                            </Box>
+                          )}
+
+                          {/* Favorite Dishes */}
+                          {summary.favoriteDishes && summary.favoriteDishes.length > 0 && (
+                            <Box className='mbe-4'>
+                              <Typography variant='subtitle2' className='mbe-2'>
+                                Favorite Dishes
+                              </Typography>
+                              <Box className='flex flex-wrap gap-1'>
+                                {summary.favoriteDishes.map((dish, index) => (
+                                  <Chip
+                                    key={index}
+                                    label={dish.dish}
+                                    color='secondary'
+                                    variant='outlined'
+                                    size='small'
+                                  />
+                                ))}
+                              </Box>
+                            </Box>
+                          )}
+
+                          {/* Last Visit */}
+                          {summary.lastVisit && (
+                            <Box>
+                              <Typography variant='subtitle2' className='mbe-1'>
+                                Last Visit
+                              </Typography>
+                              <Typography variant='body2' color='text.secondary'>
+                                {formatDateTime(summary.lastVisit)}
+                              </Typography>
+                            </Box>
+                          )}
+                        </Box>
+                      ) : (
+                        <Box className='text-center py-8'>
+                          <Typography variant='body1'>No AI insights available</Typography>
+                        </Box>
+                      )}
                     </CardContent>
                   </Card>
                 </Grid>
@@ -311,11 +467,77 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
                         <i className='tabler-shopping-cart' />
                         Order History
                       </Typography>
-                      <Box className='text-center py-8'>
-                        <Typography variant='body1'>
-                          Order history will be displayed here
-                        </Typography>
-                      </Box>
+
+                      {personDetailLoading ? (
+                        <OrderHistorySkeleton />
+                      ) : personDetailError ? (
+                        <Box className='text-center py-8'>
+                          <Typography variant='body1' color='error'>
+                            Failed to load order history
+                          </Typography>
+                        </Box>
+                      ) : personDetail && personDetail.carts && personDetail.carts.length > 0 ? (
+                        <Box>
+                          {/* Order Summary */}
+                          <Box className='flex gap-4 mbe-4 p-3 bg-grey-50 rounded'>
+                            <Box className='text-center'>
+                              <Typography variant='h6' color='primary'>
+                                {personDetail.totalCarts}
+                              </Typography>
+                              <Typography variant='caption'>Total Orders</Typography>
+                            </Box>
+                            <Box className='text-center'>
+                              <Typography variant='h6' color='success.main'>
+                                {personDetail.totalProductsInCarts}
+                              </Typography>
+                              <Typography variant='caption'>Items Ordered</Typography>
+                            </Box>
+                          </Box>
+
+                          {/* Cart List */}
+                          <Box className='space-y-3'>
+                            {personDetail.carts.map((cart, index) => (
+                              <Card key={cart.id} variant='outlined' className='p-3'>
+                                <Box className='flex justify-between items-start mbe-2'>
+                                  <Typography variant='subtitle2'>Order #{index + 1}</Typography>
+                                  <Chip
+                                    label={`Table ${cart.tableNumber}`}
+                                    color='primary'
+                                    size='small'
+                                    variant='outlined'
+                                  />
+                                </Box>
+
+                                <Typography variant='caption' color='text.secondary' className='mbe-2 block'>
+                                  {formatDateTime(cart.createdAt)}
+                                </Typography>
+
+                                {/* Products in this cart */}
+                                <Box>
+                                  <Typography variant='body2' className='mbe-1'>
+                                    Products:
+                                  </Typography>
+                                  <Box className='flex flex-wrap gap-1'>
+                                    {cart.cartProducts.map(product => (
+                                      <Chip
+                                        key={product.id}
+                                        label={product.productName}
+                                        color='secondary'
+                                        size='small'
+                                        variant='outlined'
+                                      />
+                                    ))}
+                                  </Box>
+                                </Box>
+                              </Card>
+                            ))}
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box className='text-center py-8'>
+                          <Typography variant='body1'>No order history available</Typography>
+                        </Box>
+                      )}
                     </CardContent>
                   </Card>
                 </Grid>

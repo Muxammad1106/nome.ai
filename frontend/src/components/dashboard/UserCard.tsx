@@ -29,11 +29,11 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
     <Card>
       <CardContent className='flex flex-col gap-4'>
         <div
-          className='flex justify-center pli-2.5 pbs-4 rounded bg-primaryLight relative cursor-pointer'
+          className='flex justify-center pli-2.5 pbs-4 rounded border relative cursor-pointer'
           onClick={toggleDetailDialog}
         >
           <img
-            src={person.image ? BACKEND_API + person.image : '/images/illustrations/characters/4.png'}
+            src={person.image ? BACKEND_API + person.image : 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Image.png'}
             className='bs-[146px]'
           />
 

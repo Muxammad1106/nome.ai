@@ -85,7 +85,11 @@ const VerticalMenu = ({ dictionary, scrollMenu }: Props) => {
           Dashboard
         </MenuItem>
 
-        <SubMenu label={'Analytics'} icon={<i className='tabler-chart-bar' />} disabled>
+        <MenuItem icon={<i className='tabler-chart-bar' />} href={`/${locale}/statistics`}>
+          Statistics
+        </MenuItem>
+
+        <SubMenu label={'In development'} icon={<i className='tabler-progress' />} disabled>
           <SubMenu
             label={dictionary['navigation'].dashboards}
             icon={<i className='tabler-smart-home' />}
