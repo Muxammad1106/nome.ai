@@ -1,5 +1,12 @@
 export type Pagination<T> = {
   count: number
+  totalPages: 5
+  currentPage: 1
+  pageSize: 10
+  hasNext: true
+  hasPrevious: false
+  nextPage: 2
+  previousPage: null
   results: T[]
 }
 

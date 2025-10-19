@@ -1,4 +1,5 @@
 import useRequest from '../hooks/useRequest'
+import useInfiniteScrollRequest from '../hooks/useInfiniteScrollRequest'
 
 import {
   PERSON_DETAIL,
@@ -22,6 +23,10 @@ import type {
 
 export const usePersonActionList = () => {
   return useRequest<Pagination<PersonType>>({ url: PERSON_LIST, params: { page_size: 100 } })
+}
+
+export const usePersonInfiniteScrollList = (pageSize = 10) => {
+  return useInfiniteScrollRequest<PersonType>({ url: PERSON_LIST }, { pageSize })
 }
 
 export const usePersonUpdate = (id: string) => {

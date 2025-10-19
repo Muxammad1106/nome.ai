@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import { toast } from 'react-toastify'
+
 import Grid from '@mui/material/Grid'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
@@ -48,6 +50,8 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
 
   const handleTableBindingSuccess = (newOrderData: { tableNumber: number; products: any[] }) => {
     if (personDetail) {
+      toast.success(`New order added successfully`)
+
       // Create new cart object
       const newCart = {
         id: `temp-${Date.now()}`, // Temporary ID for new cart
