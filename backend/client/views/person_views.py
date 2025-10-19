@@ -55,6 +55,11 @@ class PersonVectorView(APIView):
                 status_code = (
                     status.HTTP_200_OK if match_result.decision == "accept" else status.HTTP_202_ACCEPTED
                 )
+                response_data.pop("organization_key", None)
+                response_data.pop("decision", None)
+                response_data.pop("cosine_distance", None)
+                response_data.pop("l2_distance", None)
+                notify_person_joined(response_data)
                 return Response(response_data, status=status_code)
 
             response_data["decision"] = "create"
