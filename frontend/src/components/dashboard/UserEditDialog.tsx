@@ -15,6 +15,7 @@ import CustomTextField from '@core/components/mui/TextField'
 import DialogCloseButton from '@components/dialogs/DialogCloseButton'
 import type { PersonType } from '@/types'
 import { usePersonUpdate } from '@/services/persons'
+import { toast } from 'react-toastify'
 
 type EditPersonDataType = Partial<PersonType>
 
@@ -43,6 +44,7 @@ const UserEditDialog = ({ open, setOpen, onSuccess, person }: EditUserInfoProps)
 
     if (!response) return
     onSuccess?.(response)
+    toast.success('Customer updated successfully')
 
     handleClose()
   }

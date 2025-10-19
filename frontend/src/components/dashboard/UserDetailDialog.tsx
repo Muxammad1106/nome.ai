@@ -17,6 +17,7 @@ import UserDetailLeftSide from './UserDetailLeftSide'
 import UserDetailAISummaryBlock from './UserDetailAISummaryBlock'
 import UserDetailOrderHistoryBlock from './UserDetailOrderHistoryBlock'
 import TableBindingDialog from './TableBindingDialog'
+import { toast } from 'react-toastify'
 
 type UserDetailDialogProps = {
   open: boolean
@@ -48,6 +49,8 @@ const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailD
 
   const handleTableBindingSuccess = (newOrderData: { tableNumber: number; products: any[] }) => {
     if (personDetail) {
+      toast.success(`New order added successfully`)
+
       // Create new cart object
       const newCart = {
         id: `temp-${Date.now()}`, // Temporary ID for new cart

@@ -40,7 +40,6 @@ const Statistics = () => {
         <Grid item xs={12}>
           <div className='flex items-center justify-center gap-2 py-8'>
             <CircularProgress />
-            <Typography>Loading statistics...</Typography>
           </div>
         </Grid>
       ) : (
