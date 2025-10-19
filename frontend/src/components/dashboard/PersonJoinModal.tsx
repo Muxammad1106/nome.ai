@@ -173,7 +173,7 @@ const PersonJoinModal = ({ open, setOpen, person, onSuccess, queueCount = 0, onC
 
                 {/* Additional Info Display */}
                 <Grid item xs={12}>
-                  <Box className='p-4 bg-gray-50 rounded-lg'>
+                  <Box className='p-4 bg-black/10 rounded-lg'>
                     <Typography variant='subtitle2' className='mb-2 text-gray-700'>
                       Detected Information:
                     </Typography>
