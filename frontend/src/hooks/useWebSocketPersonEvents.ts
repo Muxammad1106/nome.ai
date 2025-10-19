@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import humps from 'humps'
 
 import { BACKEND_API } from '@/utils/request'
 
@@ -54,9 +55,11 @@ export const useWebSocketPersonEvents = ({
       socket.onmessage = (event: MessageEvent) => {
         try {
           const data = JSON.parse(event.data)
+          // Convert snake_case to camelCase to match frontend expectations
+          const camelizedData = humps.camelizeKeys(data)
 
-          console.log('Received person event:', data)
-          onMessage?.(data)
+          console.log('Received person event:', camelizedData)
+          onMessage?.(camelizedData)
         } catch (parseError) {
           console.error('Error parsing WebSocket message:', parseError)
           setError('Failed to parse received data')
