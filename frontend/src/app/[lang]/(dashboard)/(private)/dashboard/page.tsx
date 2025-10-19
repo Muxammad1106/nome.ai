@@ -1,17 +1,28 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
-import { Grid, CircularProgress, Typography } from '@mui/material'
+import { Grid, CircularProgress, Typography, FormControlLabel, Switch, Box } from '@mui/material'
 
 import type { PersonEventType, PersonType } from '../../../../../types'
 
 import UserCard from '../../../../../components/dashboard/UserCard'
+import PersonJoinModal from '../../../../../components/dashboard/PersonJoinModal'
 import { useWebSocketPersonEvents } from '../../../../../hooks/useWebSocketPersonEvents'
+import { usePersonJoinModalQueue } from '../../../../../hooks/usePersonJoinModalQueue'
 import { usePersonActionList } from '../../../../../services/persons'
+import { useModalContext } from '../../../../../contexts/ModalContext'
 
 export default function Dashboard() {
   const { data: personList, setData: setPersonList, loading } = usePersonActionList()
+  const { isAnyModalOpen } = useModalContext()
+
+  // Feature toggle state
+  const [isPersonJoinModalEnabled, setIsPersonJoinModalEnabled] = useState(true)
+
+  // Person join modal queue system
+  const { queue, currentModal, addPersonToQueue, closeCurrentModal, clearAllQueuedPersons, isModalOpen } =
+    usePersonJoinModalQueue()
 
   const addPersonToFront = useCallback(
     (person: PersonType) => {
@@ -40,9 +51,15 @@ export default function Dashboard() {
     (data: PersonEventType) => {
       if (data.event === 'person_joined' && data.person) {
         addPersonToFront(data.person)
+
+        // Add person to modal queue for information collection (only if feature is enabled and no other modals are open)
+        if (isPersonJoinModalEnabled && !isAnyModalOpen && !data.person.fullName && !data.person.phoneNumber) {
+          if (personList?.results.some(person => person.id === data.person.id)) return
+          addPersonToQueue(data.person)
+        }
       }
     },
-    [addPersonToFront]
+    [addPersonToFront, addPersonToQueue, isPersonJoinModalEnabled, isAnyModalOpen] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const { isConnected } = useWebSocketPersonEvents({ onMessage: handleMessage })
@@ -68,11 +85,40 @@ export default function Dashboard() {
     [setPersonList]
   )
 
+  const handleModalPersonUpdate = useCallback(
+    (updatedPerson: PersonType) => {
+      handlePersonUpdate(updatedPerson)
+      closeCurrentModal()
+    },
+    [handlePersonUpdate, closeCurrentModal]
+  )
+
+  const handleClearAllQueuedPersons = useCallback(() => {
+    clearAllQueuedPersons()
+  }, [clearAllQueuedPersons])
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Typography variant='h4'>Dashboard</Typography>
-        <Typography>Real-time monitoring of customer interactions and restaurant activity.</Typography>
+        <Box className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+          <Box>
+            <Typography variant='h4'>Dashboard</Typography>
+            <Typography>Real-time monitoring of customer interactions and restaurant activity.</Typography>
+          </Box>
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isPersonJoinModalEnabled && !isAnyModalOpen}
+                onChange={e => setIsPersonJoinModalEnabled(e.target.checked)}
+                color='primary'
+                disabled={isAnyModalOpen}
+              />
+            }
+            label='Auto-show new customer modal'
+            labelPlacement='start'
+          />
+        </Box>
       </Grid>
 
       {loading ? (
@@ -93,6 +139,17 @@ export default function Dashboard() {
             <UserCard person={person} onPersonUpdate={handlePersonUpdate} />
           </Grid>
         ))
+      )}
+
+      {currentModal && (
+        <PersonJoinModal
+          open={isModalOpen}
+          setOpen={closeCurrentModal}
+          person={currentModal.person}
+          onSuccess={handleModalPersonUpdate}
+          queueCount={queue.length}
+          onClearAll={handleClearAllQueuedPersons}
+        />
       )}
     </Grid>
   )

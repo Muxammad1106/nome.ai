@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-
 import { toast } from 'react-toastify'
 
 import Grid from '@mui/material/Grid'
@@ -14,6 +12,7 @@ import DialogCloseButton from '../dialogs/DialogCloseButton'
 import UserEditDialog from './UserEditDialog'
 
 import type { PersonType } from '@/types'
+import { useModalState } from '@/hooks/useModalState'
 import { usePersonAISummary, usePersonDetailWithCarts } from '../../services/persons'
 import UserDetailLeftSide from './UserDetailLeftSide'
 import UserDetailAISummaryBlock from './UserDetailAISummaryBlock'
@@ -28,8 +27,12 @@ type UserDetailDialogProps = {
 }
 
 const UserDetailDialog = ({ open, setOpen, person, onPersonUpdate }: UserDetailDialogProps) => {
-  const [editDialogOpen, setEditDialogOpen] = useState(false)
-  const [tableBindingDialogOpen, setTableBindingDialogOpen] = useState(false)
+  const { open: editDialogOpen, setOpen: setEditDialogOpen } = useModalState(`user-edit-${person.id}`)
+
+  const { open: tableBindingDialogOpen, setOpen: setTableBindingDialogOpen } = useModalState(
+    `table-binding-${person.id}`
+  )
+
   const { data: summary, loading: summaryLoading, error: summaryError } = usePersonAISummary(person.id, open)
 
   const {
