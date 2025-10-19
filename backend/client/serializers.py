@@ -4,11 +4,9 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from django.db import connection
-from django.conf import settings
 from rest_framework import serializers
-from pgvector.django import CosineDistance
 
+from .matching import find_best_person_match
 from .models import Person, Organization, CartProduct, Cart, Product
 
 
@@ -65,17 +63,6 @@ class PersonVectorSerializer(serializers.ModelSerializer):
 
         return age
 
-    @staticmethod
-    def _distance_threshold() -> float:
-        similarity = getattr(settings, "PERSON_VECTOR_DUPLICATE_SIMILARITY_THRESHOLD", 0.95)
-        try:
-            similarity = float(similarity)
-        except (TypeError, ValueError):
-            similarity = 0.95
-
-        similarity = min(max(similarity, 0.0), 1.0)
-        return 1.0 - similarity
-
     def create(self, validated_data: dict) -> Person:
         organization_key = validated_data.pop("organization_key", None)
         if not organization_key:
@@ -85,21 +72,16 @@ class PersonVectorSerializer(serializers.ModelSerializer):
         if not organization:
             raise serializers.ValidationError({"organization_key": "Организация с указанным ключом не найдена."})
 
+        self.match_result = None
+
         vector = validated_data.get("vector")
         if vector:
-            if connection.vendor == 'postgresql':
-                duplicate = (
-                    Person.objects.filter(organization=organization, vector__isnull=False)
-                    .annotate(distance=CosineDistance("vector", vector))
-                    .order_by("distance")
-                    .first()
-                )
+            match_result = find_best_person_match(organization=organization, vector=vector)
+            self.match_result = match_result
 
-                if duplicate and duplicate.distance is not None:
-                    distance = float(duplicate.distance)
-                    if distance <= self._distance_threshold():
-                        self.instance = duplicate
-                        return duplicate
+            if match_result.person and match_result.decision != "create":
+                self.instance = match_result.person
+                return match_result.person
 
         return Person.objects.create(
             organization=organization,

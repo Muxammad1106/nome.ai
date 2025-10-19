@@ -5,15 +5,12 @@ Person-related views.
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 from django.core.paginator import Paginator
-from django.db.models import Count, Q
-from django.utils import timezone
-from datetime import datetime, timedelta
 from collections import Counter
 
-from ..models import Person, CartProduct, Cart, Product
+from ..models import Person, CartProduct, Cart
 from ..serializers import (
     PersonVectorSerializer,
     PersonUpdateSerializer,
@@ -44,13 +41,36 @@ class PersonVectorView(APIView):
         serializer = PersonVectorSerializer(data=request.data)
         if serializer.is_valid():
             person = serializer.save()
-            response_serializer = PersonVectorSerializer(person)
 
-            payload = response_serializer.data
-            payload.pop("organization_key")
+            response_data = PersonVectorSerializer(person).data
+            match_result = getattr(serializer, "match_result", None)
+
+            if match_result and match_result.person and match_result.decision != "create":
+                response_data["decision"] = match_result.decision
+                if match_result.cosine_distance is not None:
+                    response_data["cosine_distance"] = match_result.cosine_distance
+                if match_result.l2_distance is not None:
+                    response_data["l2_distance"] = match_result.l2_distance
+
+                status_code = (
+                    status.HTTP_200_OK if match_result.decision == "accept" else status.HTTP_202_ACCEPTED
+                )
+                return Response(response_data, status=status_code)
+
+            response_data["decision"] = "create"
+            if match_result:
+                if match_result.cosine_distance is not None:
+                    response_data["cosine_distance"] = match_result.cosine_distance
+                if match_result.l2_distance is not None:
+                    response_data["l2_distance"] = match_result.l2_distance
+            payload = {**response_data}
+            payload.pop("organization_key", None)
+            payload.pop("decision", None)
+            payload.pop("cosine_distance", None)
+            payload.pop("l2_distance", None)
             notify_person_joined(payload)
 
-            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(response_data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
