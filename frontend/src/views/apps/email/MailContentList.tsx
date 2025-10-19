@@ -110,7 +110,6 @@ const MailContentList = (props: Props) => {
   return isInitialMount ? (
     <div className='flex items-center justify-center gap-2 grow is-full'>
       <CircularProgress />
-      <Typography>Loading...</Typography>
     </div>
   ) : areFilteredEmailsNone ? (
     <div className='relative flex justify-center gap-2 grow is-full bg-backgroundPaper'>

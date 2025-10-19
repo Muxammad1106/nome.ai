@@ -6,11 +6,11 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { Chip } from '@mui/material'
 
-import OpenDialogOnElementClick from '@components/dialogs/OpenDialogOnElementClick'
-import UserEditDialog from '@/components/dashboard/UserEditDialog'
-import UserDetailDialog from '@/components/dashboard/UserDetailDialog'
+import OpenDialogOnElementClick from '../dialogs/OpenDialogOnElementClick'
+import UserEditDialog from './UserEditDialog'
+import UserDetailDialog from './UserDetailDialog'
+import UserAvatar from './UserAvatar'
 import type { PersonType } from '@/types'
-import { BACKEND_API } from '@/utils/request'
 
 type Props = {
   person: PersonType
@@ -26,15 +26,16 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
   }
 
   return (
-    <Card>
+    <Card className='h-full'>
       <CardContent className='flex flex-col gap-4 p-3'>
         <div
-          className='flex justify-center items-center pli-2.5 pbs-4 rounded border relative cursor-pointer w-full h-full'
+          className='flex justify-center items-center pli-2.5 py-4 rounded border relative cursor-pointer w-full h-full transition hover:border-primary'
           onClick={toggleDetailDialog}
         >
-          <img
-            src={person.image ? BACKEND_API + person.image : 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Image.png'}
-            className='bs-[146px] w-full object-contain'
+          <UserAvatar
+            image={person.image}
+            className='bs-[146px] min-h-[146px] w-full object-contain'
+            alt={`${person.fullName || 'User'} avatar`}
           />
 
           {firstTime ? (
@@ -48,7 +49,7 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
                 <Typography variant='h5' className='text-gray-500'>
                   {person.fullName || 'No name provided'}
                 </Typography>
-                <Typography variant='body2'>{person.age} y.o.</Typography>
+                {person.age && <Typography variant='body2'>{person.age} y.o.</Typography>}
               </div>
 
               <OpenDialogOnElementClick
@@ -65,10 +66,8 @@ const UserCard = ({ person, onPersonUpdate }: Props) => {
             </div>
           ) : (
             <>
-              <Typography variant='h5'>
-                {person.fullName}
-              </Typography>
-              <Typography variant='body2'>{person.age} y.o.</Typography>
+              <Typography variant='h5'>{person.fullName}</Typography>
+              {person.age && <Typography variant='body2'>{person.age} y.o.</Typography>}
             </>
           )}
         </div>

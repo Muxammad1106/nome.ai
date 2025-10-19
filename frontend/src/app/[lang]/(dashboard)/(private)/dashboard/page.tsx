@@ -13,7 +13,6 @@ import { usePersonActionList } from '../../../../../services/persons'
 export default function Dashboard() {
   const { data: personList, setData: setPersonList, loading } = usePersonActionList()
 
-  // Utility function to remove person if exists and add to front
   const addPersonToFront = useCallback(
     (person: PersonType) => {
       setPersonList(prevData => {
@@ -24,11 +23,11 @@ export default function Dashboard() {
           }
         }
 
-        // Remove person if exists and add to front
         const filteredResults = prevData.results.filter(item => item.id !== person.id)
         const newCount = filteredResults.length + 1
 
         return {
+          ...prevData,
           count: newCount,
           results: [person, ...filteredResults]
         }
@@ -61,7 +60,7 @@ export default function Dashboard() {
         const updatedResults = prevData.results.map(item => (item.id === updatedPerson.id ? updatedPerson : item))
 
         return {
-          count: prevData.count,
+          ...prevData,
           results: updatedResults
         }
       })
@@ -71,14 +70,18 @@ export default function Dashboard() {
 
   return (
     <Grid container spacing={6}>
+      <Grid item xs={12}>
+        <Typography variant='h4'>Dashboard</Typography>
+        <Typography>Real-time monitoring of customer interactions and restaurant activity.</Typography>
+      </Grid>
+
       {loading ? (
         <Grid item xs={12}>
           <div className='flex items-center justify-center gap-2 py-8'>
             <CircularProgress />
-            <Typography>Loading...</Typography>
           </div>
         </Grid>
-      ) : personList?.count === 0 ? (
+      ) : personList?.results?.length === 0 ? (
         <Grid item xs={12}>
           <div className='text-center py-8'>
             <p className='text-gray-500'>{isConnected ? 'Waiting for person events...' : 'Connecting...'}</p>

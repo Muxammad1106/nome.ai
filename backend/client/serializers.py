@@ -13,6 +13,8 @@ from .models import Person, Organization, CartProduct, Cart, Product
 class PersonVectorSerializer(serializers.ModelSerializer):
     organization_key = serializers.CharField(write_only=True)
     vector = serializers.JSONField(required=False, allow_null=True)
+    full_name = serializers.CharField(max_length=255, required=False, allow_null=True)
+    phone_number = serializers.CharField(max_length=255, required=False, allow_null=True)
     age = serializers.IntegerField(required=False, allow_null=True)
     gender = serializers.CharField(max_length=255, required=False, allow_null=True)
     emotion = serializers.CharField(max_length=255, required=False, allow_null=True)
@@ -22,8 +24,8 @@ class PersonVectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ("id", "organization_key", "vector", "image", "age", "gender", "emotion", "body_type", "entry_time", "exit_time")
-        read_only_fields = ("id",)
+        fields = ("id", "organization_key", "vector", "image", "full_name", "phone_number", "age", "gender", "emotion", "body_type", "entry_time", "exit_time", "created_at", "updated_at")
+        read_only_fields = ("id", "created_at", "updated_at")
 
     def validate_vector(self, v: Any):
         if v in (None, "", []):

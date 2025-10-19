@@ -2,6 +2,8 @@
 
 import { type ChangeEvent, useState } from 'react'
 
+import { toast } from 'react-toastify'
+
 import Grid from '@mui/material/Grid'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
@@ -9,6 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Typography from '@mui/material/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import CustomTextField from '@core/components/mui/TextField'
 import DialogCloseButton from '@components/dialogs/DialogCloseButton'
@@ -42,6 +45,7 @@ const UserEditDialog = ({ open, setOpen, onSuccess, person }: EditUserInfoProps)
 
     if (!response) return
     onSuccess?.(response)
+    toast.success('Customer updated successfully')
 
     handleClose()
   }
@@ -77,6 +81,7 @@ const UserEditDialog = ({ open, setOpen, onSuccess, person }: EditUserInfoProps)
                 defaultValue={person.fullName}
                 value={userData?.fullName}
                 onChange={e => setUserData({ ...userData, fullName: e.target.value })}
+                disabled={loading}
               />
             </Grid>
 
@@ -88,17 +93,23 @@ const UserEditDialog = ({ open, setOpen, onSuccess, person }: EditUserInfoProps)
                 defaultValue={person.phoneNumber}
                 value={userData?.phoneNumber}
                 onChange={e => setUserData({ ...userData, phoneNumber: e.target.value })}
+                disabled={loading}
               />
             </Grid>
           </Grid>
         </DialogContent>
 
         <DialogActions className='justify-center pbs-0 sm:pbe-16 sm:pli-16'>
-          <Button variant='contained' type='submit'>
-            Submit
+          <Button
+            variant='contained'
+            type='submit'
+            disabled={loading}
+            startIcon={loading ? <CircularProgress size={16} color='inherit' /> : null}
+          >
+            {loading ? 'Updating...' : 'Submit'}
           </Button>
 
-          <Button variant='tonal' color='secondary' type='reset' onClick={handleClose}>
+          <Button variant='tonal' color='secondary' type='reset' onClick={handleClose} disabled={loading}>
             Cancel
           </Button>
         </DialogActions>

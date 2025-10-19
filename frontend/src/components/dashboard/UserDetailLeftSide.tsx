@@ -1,8 +1,8 @@
 import { Box, Button, Card, CardContent, Chip, Grid, Typography } from '@mui/material'
 
 import type { PersonType } from '@/types'
-import { BACKEND_API } from '@/utils/request'
 import CustomTextField from '@/@core/components/mui/TextField'
+import UserAvatar from './UserAvatar'
 
 type Props = {
   person: PersonType
@@ -49,13 +49,10 @@ export default function UserDetailLeftSide({ person, openEditModal }: Props) {
           <Card>
             <CardContent className='text-center relative'>
               <Box className='flex justify-center mbe-3'>
-                <img
-                  src={
-                    person.image
-                      ? BACKEND_API + person.image
-                      : 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Image.png'
-                  }
+                <UserAvatar
+                  image={person.image}
                   className='bs-[146px] w-full object-contain'
+                  alt={`${person.fullName || 'User'} avatar`}
                 />
               </Box>
 

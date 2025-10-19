@@ -18,6 +18,9 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ['nome-ai-t5lly.ondigitalocean.app'],
+  },
 }
 
 module.exports = nextConfig
