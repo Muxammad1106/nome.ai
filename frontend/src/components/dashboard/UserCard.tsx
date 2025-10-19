@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
@@ -11,6 +9,7 @@ import UserEditDialog from './UserEditDialog'
 import UserDetailDialog from './UserDetailDialog'
 import UserAvatar from './UserAvatar'
 import type { PersonType } from '@/types'
+import { useModalState } from '@/hooks/useModalState'
 
 type Props = {
   person: PersonType
@@ -18,7 +17,7 @@ type Props = {
 }
 
 const UserCard = ({ person, onPersonUpdate }: Props) => {
-  const [detailDialogOpen, setDetailDialogOpen] = useState(false)
+  const { open: detailDialogOpen, setOpen: setDetailDialogOpen } = useModalState(`user-detail-${person.id}`)
   const firstTime = !person.fullName
 
   const toggleDetailDialog = () => {
