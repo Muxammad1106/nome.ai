@@ -2,6 +2,8 @@
 
 import { type ChangeEvent, useState } from 'react'
 
+import { toast } from 'react-toastify'
+
 import Grid from '@mui/material/Grid'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
@@ -15,7 +17,6 @@ import CustomTextField from '@core/components/mui/TextField'
 import DialogCloseButton from '@components/dialogs/DialogCloseButton'
 import type { PersonType } from '@/types'
 import { usePersonUpdate } from '@/services/persons'
-import { toast } from 'react-toastify'
 
 type EditPersonDataType = Partial<PersonType>
 

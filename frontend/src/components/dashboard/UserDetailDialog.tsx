@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import { toast } from 'react-toastify'
+
 import Grid from '@mui/material/Grid'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
@@ -17,7 +19,6 @@ import UserDetailLeftSide from './UserDetailLeftSide'
 import UserDetailAISummaryBlock from './UserDetailAISummaryBlock'
 import UserDetailOrderHistoryBlock from './UserDetailOrderHistoryBlock'
 import TableBindingDialog from './TableBindingDialog'
-import { toast } from 'react-toastify'
 
 type UserDetailDialogProps = {
   open: boolean
